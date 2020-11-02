@@ -61,17 +61,7 @@ namespace mini
         //마우스휠로 zoomin 하는 이벤트 
         private void imgZoom_MouseWheel(object sender, MouseEventArgs e)
         {
-            double height = pictureBox1.Height;
-            double width = pictureBox1.Width;
-
-            int delta = e.Delta;
-
-            height += delta;
-            width += delta;
-
-            pictureBox1.Height = (int)(height < 150 ? 150 : height);
-            pictureBox1.Width = (int)(width < 200 ? 200 : width);
-            //-------------------------------------------------------
+           
 
             int lines = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
             PictureBox pb = (PictureBox)sender;
@@ -373,7 +363,8 @@ namespace mini
             }
         }
 
-        
+
+
 
 
 
