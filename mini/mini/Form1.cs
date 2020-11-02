@@ -50,7 +50,7 @@ namespace mini
             pictureBox1.Paint += new PaintEventHandler(pictureBox1_Paint);
             pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
             pictureBox1.MouseMove += new MouseEventHandler(pictureBox1_MouseMove);
-            
+
 
         }
         private void Form1_Load(object sender, EventArgs e)
@@ -131,6 +131,7 @@ namespace mini
 
             pictureBox1.Invalidate();
         }
+        
 
 
 
@@ -268,6 +269,7 @@ namespace mini
             //이미지 표현하기
             images = System.Drawing.Image.FromFile(savePath + filename + ".jpg");
             pictureBox1.Image = images;
+            original = (Bitmap)images;
             pictureBox1.Show();
 
             trackBar1.Value = 50;
@@ -323,14 +325,17 @@ namespace mini
         }
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            if (pictureBox1.Image == null) return;
-            original = (Bitmap)pictureBox1.Image;
-            pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
+            trackBar_Scroll(sender,e);
         }
         private void trackBar2_Scroll(object sender, EventArgs e)
         {
+            trackBar_Scroll(sender, e);
+        }
+
+        private void trackBar_Scroll(object sender,EventArgs e)
+        {
+            //original = (Bitmap)pictureBox1.Image;
             if (pictureBox1.Image == null) return;
-            original = (Bitmap)pictureBox1.Image;
             pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
         }
 
