@@ -36,6 +36,7 @@ namespace mini
 
 
         //---------------
+        //이미지 처리를 위한 변수 선언
         private Point LastPoint;
 
         private double ratio = 1.0F;
@@ -46,6 +47,7 @@ namespace mini
         public Form1()
         {
             InitializeComponent();
+            //마우스 이벤트는 따로 선언해 줘야 작동가능
             pictureBox1.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
             pictureBox1.Paint += new PaintEventHandler(pictureBox1_Paint);
             pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
@@ -56,6 +58,8 @@ namespace mini
         private void Form1_Load(object sender, EventArgs e)
         {
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         //마우스휠로 zoomin 하는 이벤트 
@@ -93,6 +97,7 @@ namespace mini
             pictureBox1.Invalidate();
 
         }
+        //줌인 할때 이미지 보간작업
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             if (pictureBox1.Image != null)
@@ -104,14 +109,24 @@ namespace mini
             }
         }
 
+        //마우스 클릭 했을 때 발생하는 이벤트
+
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 clickPoint = new Point(e.X, e.Y);
             }
+            else
+            {
+                trackBar1.Value = 50;
+                trackBar2.Value = 0;
+                pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
+            }
             pictureBox1.Invalidate();
         }
+
+        //마우스가 움직일때 좌표 설정이벤트
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -131,10 +146,20 @@ namespace mini
 
             pictureBox1.Invalidate();
         }
-        
 
+        //프로세스 연결 해제를 위한 작업.    
+        private void Image_null()
+        {
+            original = null;
+            pictureBox1.Image = null;
+            label5.Text = null;
+            label6.Text = null;
+            label7.Text = null;
+            label8.Text = null;
 
-
+            trackBar1.Value = 50;
+            trackBar2.Value = 0;
+        }
 
         //DICOM 파일을 불러오기 위한 이벤트
         private void button1_Click(object sender, EventArgs e)
@@ -174,15 +199,7 @@ namespace mini
             listBox1.Items.Clear();
 
             //이미지뷰의 작업 모두 삭제 후 빈 화면 만들기
-            pictureBox1.Dispose();
-            pictureBox1.Image = null;
-            label5.Text = null;
-            label6.Text = null;
-            label7.Text = null;
-            label8.Text = null;
-
-            trackBar1.Value = 50;
-            trackBar2.Value = 0;
+            Image_null();
 
             //DICOM 파일 변환 한 jpg파일이 모여있는 폴더 삭제를 위한 작업
             DirectoryInfo di = new DirectoryInfo("C:\\Users\\20191120\\Desktop\\mini_jpg");
@@ -239,12 +256,12 @@ namespace mini
             String filename = Path.GetFileNameWithoutExtension(fname);
             System.Drawing.Image images = null;
 
+
             using (var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read))
             using (DicomImage image = new DicomImage(fileStream))
             {
-                // Save as JPEG
-                image.Save(savePath + filename + ".jpg", new JpegOptions());
-
+                    // Save as JPEG
+                    image.Save(savePath + filename + ".jpg", new JpegOptions());
             }
 
             Dicom.DicomFile dicomFile = new DicomFile();
@@ -284,7 +301,6 @@ namespace mini
         }
 
 
-
         //DICOM파일 사용 후 목록에 남아있는 이름과 jpg 파일을 하나씩 지우기 위한 이벤트
         private void button3_Click(object sender, EventArgs e)
         {
@@ -304,15 +320,7 @@ namespace mini
 
                 listBox1.Items.Remove(listBox1.SelectedItem);
                 //프로세스 연결 해제를 위한 작업.    
-                original = null;
-                pictureBox1.Image = null;
-                label5.Text = null;
-                label6.Text = null;
-                label7.Text = null;
-                label8.Text = null;
-
-                trackBar1.Value = 50;
-                trackBar2.Value = 0;
+                Image_null();
 
                 if (file.Exists)
                 {
@@ -334,7 +342,6 @@ namespace mini
 
         private void trackBar_Scroll(object sender,EventArgs e)
         {
-            //original = (Bitmap)pictureBox1.Image;
             if (pictureBox1.Image == null) return;
             pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
         }
@@ -368,35 +375,6 @@ namespace mini
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        /*
-        class DICOMtoPACS
-        {
-            public static void SendToPACS(string DICOMFile, string SourceAET, string TargetIP, int TargetPort, string TargetAET)
-            {
-                var m_pDicomFile = DicomFile.Open(DICOMFile);
-
-                Dicom.Network.DicomClient pClient = new Dicom.Network.DicomClient();
-                pClient.NegotiateAsyncOps();
-                pClient.AddRequest(new DicomCStoreRequest(m_pDicomFile, DicomPriority.Medium)); 
-                pClient.Send(TargetIP, TargetPort, false, SourceAET, TargetAET);
-            }
-        }
-        private void simpleButton2_Click(object sender, EventArgs e)
-        {
-            DICOMtoPACS.SendToPACS(@"D:\dicomfile.dcm", "Source_AETITLE", "192.168.19.216", 104, "TargetPACS_AETITLE");
-        }
-        */
     }
 }
 
