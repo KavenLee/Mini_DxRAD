@@ -233,16 +233,8 @@ namespace mini
             }
             else
             {
-                //이미지가 띄어져 있다면
-                if (pictureBox1.Image != null)
-                {
                     pictureBox1.Image = null;
                     fileOpen();
-                }
-                else
-                {
-                    fileOpen();
-                }
             }
         }
 
@@ -253,7 +245,7 @@ namespace mini
             original = null;
             //리스트박스의 이름 가져오기
             String fname = (String)listBox1.SelectedItem;
-            String filename = Path.GetFileNameWithoutExtension(fname);
+            String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
             System.Drawing.Image images = null;
 
 
@@ -261,7 +253,7 @@ namespace mini
             using (DicomImage image = new DicomImage(fileStream))
             {
                     // Save as JPEG
-                    image.Save(savePath + filename + ".jpg", new JpegOptions());
+                    image.Save(savePath + filename, new JpegOptions());
             }
 
             Dicom.DicomFile dicomFile = new DicomFile();
@@ -284,14 +276,16 @@ namespace mini
 
 
             //이미지 표현하기
-            images = System.Drawing.Image.FromFile(savePath + filename + ".jpg");
+            images = System.Drawing.Image.FromFile(savePath + filename);
             pictureBox1.Image = images;
             original = (Bitmap)images;
             pictureBox1.Show();
 
+            //값 초기화
             trackBar1.Value = 50;
             trackBar2.Value = 0;
 
+            //마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
             imgPoint = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
             imgRect = new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height);
             ratio = 1.0;
