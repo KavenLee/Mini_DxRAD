@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>289</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>축의금 정산</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>351</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="verticalSpacing">
+     <number>1</number>
+    </property>
+    <item row="4" column="0" alignment="Qt::AlignHCenter">
+     <widget class="QLabel" name="Money">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>금액</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" alignment="Qt::AlignRight">
+     <widget class="QTextEdit" name="teName">
+      <property name="font">
+       <font>
+        <family>D2Coding</family>
+        <pointsize>22</pointsize>
+       </font>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>IBeamCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1" alignment="Qt::AlignRight">
+     <widget class="QTextEdit" name="teMoney">
+      <property name="font">
+       <font>
+        <family>D2Coding</family>
+        <pointsize>22</pointsize>
+       </font>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>IBeamCursor</cursorShape>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" alignment="Qt::AlignHCenter">
+     <widget class="QLabel" name="Name">
+      <property name="font">
+       <font>
+        <family>Arial Black</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>이름</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="Ok">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>240</y>
+     <width>75</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>등록</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Check">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>240</y>
+     <width>75</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>현황</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Cancel">
+   <property name="geometry">
+    <rect>
+     <x>260</x>
+     <y>240</y>
+     <width>75</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>취소</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="checkBox">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>189</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Arial Black</family>
+     <pointsize>16</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>식권사용여부</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
