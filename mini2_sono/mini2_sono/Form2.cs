@@ -24,8 +24,7 @@ namespace mini2_sono
         private String savePath = "C:\\mini_jpg\\";
         //이미지 밝기 조절을 위한 비트맵 변수 생성
         private Bitmap original = null;
-
-
+        
         //---------------
         //이미지 처리를 위한 변수 선언
         private Point LastPoint;
@@ -34,7 +33,7 @@ namespace mini2_sono
         private Point imgPoint;
         private Rectangle imgRect;
         private Point clickPoint;
-
+       
         public Form2()
         {
             InitializeComponent();
@@ -44,6 +43,13 @@ namespace mini2_sono
             pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
             pictureBox1.MouseMove += new MouseEventHandler(pictureBox1_MouseMove);
 
+            //for문을 돌리기 위해 선언한 pictureBox 배열
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+            for(int i = 0; i < 8; i++)
+            {
+                pB[i].MouseDoubleClick += new MouseEventHandler(imgZoom);
+                pB[i].MouseDown += new MouseEventHandler(imgDelete);
+            }
 
         }
         private void Form2_Load(object sender, EventArgs e)
@@ -51,7 +57,7 @@ namespace mini2_sono
             this.DoubleBuffered = true;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.WindowState = FormWindowState.Maximized;
-
+            
         }
 
         //마우스휠로 zoomin 하는 이벤트 
@@ -139,12 +145,61 @@ namespace mini2_sono
             pictureBox1.Invalidate();
         }
 
+        //더블클릭 시 오른쪽에 해당하는 이미지 크게보기.
+        private void imgZoom(object sender,MouseEventArgs e)
+        {
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+            for( int i = 0; i < 8; i++)
+            {
+                if (pB[i] == (PictureBox)sender)
+                {
+                    //사이즈 맞추기
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Image = pB[i].Image;
+
+                    //이미지 표현하기
+                    original = (Bitmap)pictureBox1.Image;
+                    pictureBox1.Show();
+
+                    //값 초기화
+                    trackBar1.Value = 50;
+                    trackBar2.Value = 0;
+
+                    //마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
+                    imgPoint = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
+                    imgRect = new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height);
+                    ratio = 1.0;
+                    clickPoint = imgPoint;
+
+                    pictureBox1.Invalidate();
+                }
+            }
+        }
+
+        //오른클릭시 해당하는 이미지 단일 삭제.
+        private void imgDelete(object sender, MouseEventArgs e)
+        {
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+            if (e.Button == MouseButtons.Right)
+            {
+               for(int i = 0; i < 8; i++)
+                {
+                    //picturbox 여러 개 중 해당하는 picturebox 이미지 삭제
+                    if (pB[i] == (PictureBox)sender)
+                    {
+                        pB[i].Image = null;
+                    }
+                }
+            }
+        }
+
+
         //프로세스 연결 해제를 위한 작업.    
         private void Image_null()
         {
+            original = null;
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3,  pictureBox4, pictureBox5, pictureBox6,  pictureBox7, pictureBox8, pictureBox9 };
-            original = null;
             pictureBox1.Image = null;
             for (int i = 0; i < 8; i++)
             {
@@ -294,7 +349,6 @@ namespace mini2_sono
                 }
                 else
                 {
-                    //index over 됨 수정 필요.
                     continue;
                 }
 
@@ -305,27 +359,8 @@ namespace mini2_sono
             trackBar1.Value = 50;
             trackBar2.Value = 0;
 
-            ////사이즈 맞추기
-            //pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-
-
-            ////이미지 표현하기
-            //images = Image.FromFile(savePath + filename);
-            //pictureBox1.Image = images;
-            //original = (Bitmap)images;
-            //pictureBox1.Show();
-
-            ////값 초기화
-            //trackBar1.Value = 50;
-            //trackBar2.Value = 0;
-
-            ////마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
-            //imgPoint = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
-            //imgRect = new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height);
-            //ratio = 1.0;
-            //clickPoint = imgPoint;
-
-            //pictureBox1.Invalidate();
+            
+            
         }
 
 
@@ -347,9 +382,8 @@ namespace mini2_sono
                 FileInfo file = new FileInfo(savePath + FileName);
 
                 listBox1.Items.Remove(listBox1.SelectedItem);
-                //프로세스 연결 해제를 위한 작업.    
-                Image_null();
 
+                pictureBox1.Image = null;
                 if (file.Exists)
                 {
                     //bitmap 으로 변환된 파일을 picturebox 에서 해제먼저 시키기
@@ -404,45 +438,8 @@ namespace mini2_sono
         }
 
 
-        private void pictureBox9_Click(object sender, EventArgs e)
-        {
+       
 
-        }
-
-        private void pictureBox8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox4_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

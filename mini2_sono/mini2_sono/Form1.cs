@@ -10,6 +10,7 @@ namespace mini2_sono
             InitializeComponent();
             this.textBox2.KeyDown += new KeyEventHandler(Enter_KeyDown);
             textBox1.Text = "Admin";
+            textBox2.Focus();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,5 +41,6 @@ namespace mini2_sono
                 this.button1_Click(sender, e);
             }
         }
+
     }
 }
