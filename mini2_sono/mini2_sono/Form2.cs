@@ -24,7 +24,7 @@ namespace mini2_sono
         private String savePath = "C:\\mini_jpg\\";
         //이미지 밝기 조절을 위한 비트맵 변수 생성
         private Bitmap original = null;
-        
+
         //---------------
         //이미지 처리를 위한 변수 선언
         private Point LastPoint;
@@ -33,7 +33,10 @@ namespace mini2_sono
         private Point imgPoint;
         private Rectangle imgRect;
         private Point clickPoint;
-       
+
+        
+
+
         public Form2()
         {
             InitializeComponent();
@@ -45,7 +48,7 @@ namespace mini2_sono
 
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
-            for(int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 pB[i].MouseDoubleClick += new MouseEventHandler(imgZoom);
                 pB[i].MouseDown += new MouseEventHandler(imgDelete);
@@ -57,7 +60,7 @@ namespace mini2_sono
             this.DoubleBuffered = true;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.WindowState = FormWindowState.Maximized;
-            
+
         }
 
         //마우스휠로 zoomin 하는 이벤트 
@@ -146,16 +149,24 @@ namespace mini2_sono
         }
 
         //더블클릭 시 오른쪽에 해당하는 이미지 크게보기.
-        private void imgZoom(object sender,MouseEventArgs e)
+        private void imgZoom(object sender, MouseEventArgs e)
         {
+            String fname = (String)listBox1.SelectedItem;
+            String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
+            //Image images = null;
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
-            for( int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 if (pB[i] == (PictureBox)sender)
                 {
                     //사이즈 맞추기
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Image = pB[i].Image;
+
+                    //DICOM TAG 가 Image와 일치하는지 확인한 후 일치 하지 않으면 교체하기.
+                    
+                    
+                    
 
                     //이미지 표현하기
                     original = (Bitmap)pictureBox1.Image;
@@ -182,15 +193,26 @@ namespace mini2_sono
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             if (e.Button == MouseButtons.Right)
             {
-               for(int i = 0; i < 8; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     //picturbox 여러 개 중 해당하는 picturebox 이미지 삭제
                     if (pB[i] == (PictureBox)sender)
                     {
                         pB[i].Image = null;
+                        pictureBox1.Image = null;
+                        label_null();
                     }
                 }
             }
+        }
+
+        //label의 텍스트 초기화.
+        private void label_null()
+        {
+            label5.Text = null;
+            label6.Text = null;
+            label7.Text = null;
+            label8.Text = null;
         }
 
 
@@ -199,16 +221,13 @@ namespace mini2_sono
         {
             original = null;
             //for문을 돌리기 위해 선언한 pictureBox 배열
-            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3,  pictureBox4, pictureBox5, pictureBox6,  pictureBox7, pictureBox8, pictureBox9 };
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             pictureBox1.Image = null;
             for (int i = 0; i < 8; i++)
             {
                 pB[i].Image = null;
             }
-            label5.Text = null;
-            label6.Text = null;
-            label7.Text = null;
-            label8.Text = null;
+            label_null();
 
             trackBar1.Value = 50;
             trackBar2.Value = 0;
@@ -296,41 +315,71 @@ namespace mini2_sono
         {
             //이미지 밝기조절용 비트맵을 초기화.
             original = null;
+
+
             //리스트박스의 이름 가져오기
             String fname = (String)listBox1.SelectedItem;
             String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
-            Image images = null;
+           
+
+            //파일이 이미 존재 한다면 파일 생성하지않고 비어있는 picturebox에 이미지 표현하기.
+            DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
+            if (di.GetFiles() != null)
+            {
+                foreach (FileInfo fi in di.GetFiles())
+                {
+                    if (fi.Name.Equals(filename))
+                    {
+                        pictureBox_Open();
+                    }
+                }
+            }
+
 
 
             using (var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read))
             using (DicomImage image = new DicomImage(fileStream))
             {
+                foreach(FileInfo fi in di.GetFiles())
+                {
+                    if (fi.Name.Equals(filename))
+                    {
+                        return;
+                    }
+                }
                 // Save as JPEG
                 image.Save(savePath + filename, new JpegOptions());
             }
 
-            DicomFile dicomFile = new DicomFile();
-            dicomFile = DicomFile.Open(path + fname, FileReadOption.ReadAll);
-            //dicomFile.WriteToConsole(); 태그확인용 
+
+            pictureBox_Open();
 
 
-            string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
-            string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
-            string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
-            string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
-            label5.Text = Id;
-            label6.Text = Name;
-            label7.Text = Sex;
-            label8.Text = Birth;
+            //값 초기화
+            trackBar1.Value = 50;
+            trackBar2.Value = 0;
+
+
+
+        }
+
+        //비어있는 pictureBox 에 이미지 적용하기 위한 메서드.
+        private void pictureBox_Open()
+        {
+            String fname = (String)listBox1.SelectedItem;
+            String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
+            Image images = null;
 
             //for문 사용해서 picturebox 2~9까지 적용하기.
             //if문으로 picturebox 2~9까지 이미지 열려있는지 확인하기.
             //확인 후 해당하는 picturebox 에 이미지 열기.
 
+            //for문을 돌리기 위해 선언한 pictureBox 배열
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+
             for (int i = 0; i < 8; i++)
             {
-                //for문을 돌리기 위해 선언한 pictureBox 배열
-                PictureBox[] pB = new PictureBox[8] { pictureBox2,pictureBox3, pictureBox4, pictureBox5,pictureBox6, pictureBox7,pictureBox8, pictureBox9 };
+
 
                 if (pB[i].Image == null)
                 {
@@ -341,10 +390,25 @@ namespace mini2_sono
                     images = Image.FromFile(savePath + filename);
                     pB[i].Image = images;
                     original = (Bitmap)images;
+
+
+                    DicomFile dicomFile = new DicomFile();
+                    dicomFile = DicomFile.Open(path + fname, FileReadOption.ReadAll);
+                    //dicomFile.WriteToConsole(); 태그확인용 
+
+
+                    string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+                    string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                    string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                    string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                    label5.Text = Id;
+                    label6.Text = Name;
+                    label7.Text = Sex;
+                    label8.Text = Birth;
+
+
                     pB[i].Show();
 
-
-                    pB[i].Invalidate();
                     break;
                 }
                 else
@@ -353,45 +417,52 @@ namespace mini2_sono
                 }
 
             }
-
-
-            //값 초기화
-            trackBar1.Value = 50;
-            trackBar2.Value = 0;
-
-            
-            
         }
 
 
-        //DICOM파일 사용 후 목록에 남아있는 이름과 jpg 파일을 하나씩 지우기 위한 이벤트
+        //DICOM파일 사용 후 목록에 남아있는 이름과 jpg 파일을 하나씩 지우기 위한 메서드
         private void button3_Click(object sender, EventArgs e)
         {
-            int cnt = listBox1.Items.Count;
 
-            for (int i = 0; i < cnt; i++)
+            //picturebox 에서 이미지 해제 하기 구현하기위한 배열선언
+            PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+
+
+            //리스트에 남아있는 DICOM 파일 이름 
+            String EtName = (String)listBox1.SelectedItem;
+
+            //변환된 jpg 파일을 삭제하기 위해 DICOM 확장자를 jpg 로 변환
+            String FileName = Path.GetFileNameWithoutExtension(EtName) + ".jpg";
+
+            //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을
+            //가진 파일 선택 해서 삭제 하기 위한 변수 선언.
+            FileInfo file = new FileInfo(savePath + FileName);
+
+            listBox1.Items.Remove(listBox1.SelectedItem);
+
+            
+            Image images = Image.FromFile(savePath + FileName);
+
+            //이미지 해제하기 구현.
+            label_null();
+
+            for (int j = 0; j < 8; j++)
             {
-                //리스트에 남아있는 DICOM 파일 이름 
-                String EtName = (String)listBox1.SelectedItem;
-
-                //변환된 jpg 파일을 삭제하기 위해 DICOM 확장자를 jpg 로 변환
-                String FileName = Path.GetFileNameWithoutExtension(EtName) + ".jpg";
-
-                //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을
-                //가진 파일 선택 해서 삭제 하기 위한 변수 선언.
-                FileInfo file = new FileInfo(savePath + FileName);
-
-                listBox1.Items.Remove(listBox1.SelectedItem);
-
-                pictureBox1.Image = null;
-                if (file.Exists)
+                if (pB[j].Image==images)
                 {
-                    //bitmap 으로 변환된 파일을 picturebox 에서 해제먼저 시키기
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    File.Delete(savePath + FileName);
+                    pB[j].Image = null;
+                    pictureBox1.Image = null;
                 }
             }
+
+
+            if (file.Exists)
+            {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Delete(savePath + FileName);
+            }
+
         }
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
@@ -438,7 +509,7 @@ namespace mini2_sono
         }
 
 
-       
+
 
     }
 }
