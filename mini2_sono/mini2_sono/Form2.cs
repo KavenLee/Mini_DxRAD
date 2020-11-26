@@ -151,9 +151,6 @@ namespace mini2_sono
         //더블클릭 시 오른쪽에 해당하는 이미지 크게보기.
         private void imgZoom(object sender, MouseEventArgs e)
         {
-            String fname = (String)listBox1.SelectedItem;
-            String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
-            //Image images = null;
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             for (int i = 0; i < 8; i++)
             {
@@ -163,10 +160,6 @@ namespace mini2_sono
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Image = pB[i].Image;
 
-                    //DICOM TAG 가 Image와 일치하는지 확인한 후 일치 하지 않으면 교체하기.
-                    
-                    
-                    
 
                     //이미지 표현하기
                     original = (Bitmap)pictureBox1.Image;
@@ -200,7 +193,6 @@ namespace mini2_sono
                     {
                         pB[i].Image = null;
                         pictureBox1.Image = null;
-                        label_null();
                     }
                 }
             }
