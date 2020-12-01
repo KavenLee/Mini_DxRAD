@@ -477,7 +477,7 @@ namespace mini2_sono
 
             for (int j = 0; j < 8; j++)
             {
-                if (pB[j].Image!=null)
+                if (pB[j].Image==null)
                 {
                     pB[j].Image = images;
                     original = (Bitmap)pB[0].Image;
