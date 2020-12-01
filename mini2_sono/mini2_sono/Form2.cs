@@ -456,6 +456,11 @@ namespace mini2_sono
         private void button3_Click(object sender, EventArgs e)
         {
 
+            if (listBox1.SelectedItem == null)
+            {
+                return;
+            }
+
             //picturebox 에서 이미지 해제 하기 구현하기위한 배열선언
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
 
@@ -463,38 +468,30 @@ namespace mini2_sono
             //리스트에 남아있는 DICOM 파일 이름 
             String EtName = (String)listBox1.SelectedItem;
 
-            //변환된 jpg 파일을 삭제하기 위해 DICOM 확장자를 jpg 로 변환
+            //변환된 jpg 파일을 표시하기 위해 DICOM 확장자를 jpg 로 변환
             String FileName = Path.GetFileNameWithoutExtension(EtName) + ".jpg";
 
-            //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을
-            //가진 파일 선택 해서 삭제 하기 위한 변수 선언.
-            FileInfo file = new FileInfo(savePath + FileName);
-
-            listBox1.Items.Remove(listBox1.SelectedItem);
-
-            
+            //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을 가진 파일을 이미지로 변환
             Image images = Image.FromFile(savePath + FileName);
-
-            //이미지 해제하기 구현.
-            label_null();
+            
 
             for (int j = 0; j < 8; j++)
             {
-                if (pB[j].Image==images)
+                if (pB[j].Image!=null)
                 {
-                    pB[j].Image = null;
-                    original = null;
-                    pictureBox1.Image = null;
+                    pB[j].Image = images;
+                    original = (Bitmap)pB[0].Image;
+                    pictureBox1.Image = pB[0].Image;
+                    
+                }
+                else
+                {
+                    break;
                 }
             }
 
 
-            if (file.Exists)
-            {
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                File.Delete(savePath + FileName);
-            }
+            
 
         }
 
