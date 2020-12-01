@@ -63,6 +63,7 @@ namespace mini2_sono
             this.pictureBox10 = new System.Windows.Forms.PictureBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
+            this.pictureBox11 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -79,29 +80,30 @@ namespace mini2_sono
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
             // 
             this.listBox1.AllowDrop = true;
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.listBox1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.listBox1.BackColor = System.Drawing.SystemColors.Desktop;
             this.listBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listBox1.ForeColor = System.Drawing.Color.Yellow;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(12, 516);
+            this.listBox1.Location = new System.Drawing.Point(24, 512);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(117, 108);
+            this.listBox1.Size = new System.Drawing.Size(117, 180);
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.ForeColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(12, 634);
+            this.button1.Location = new System.Drawing.Point(24, 698);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(57, 23);
             this.button1.TabIndex = 1;
@@ -111,10 +113,10 @@ namespace mini2_sono
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(75, 634);
+            this.button2.Location = new System.Drawing.Point(87, 698);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(54, 23);
             this.button2.TabIndex = 2;
@@ -124,10 +126,10 @@ namespace mini2_sono
             // 
             // button3
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button3.BackColor = System.Drawing.SystemColors.Control;
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(12, 663);
+            this.button3.Location = new System.Drawing.Point(24, 727);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(57, 23);
             this.button3.TabIndex = 3;
@@ -141,10 +143,10 @@ namespace mini2_sono
             // 
             // button4
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button4.BackColor = System.Drawing.SystemColors.Control;
             this.button4.ForeColor = System.Drawing.Color.Red;
-            this.button4.Location = new System.Drawing.Point(75, 663);
+            this.button4.Location = new System.Drawing.Point(87, 727);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(54, 23);
             this.button4.TabIndex = 4;
@@ -154,6 +156,7 @@ namespace mini2_sono
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Outset;
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -165,7 +168,7 @@ namespace mini2_sono
             this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 103);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 4;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 44.69697F));
@@ -181,9 +184,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label8.Location = new System.Drawing.Point(75, 181);
+            this.label8.Location = new System.Drawing.Point(76, 179);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(66, 63);
+            this.label8.Size = new System.Drawing.Size(63, 63);
             this.label8.TabIndex = 7;
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -193,9 +196,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label7.Location = new System.Drawing.Point(75, 115);
+            this.label7.Location = new System.Drawing.Point(76, 111);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(66, 66);
+            this.label7.Size = new System.Drawing.Size(63, 66);
             this.label7.TabIndex = 7;
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -205,9 +208,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label6.Location = new System.Drawing.Point(75, 51);
+            this.label6.Location = new System.Drawing.Point(76, 51);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(66, 64);
+            this.label6.Size = new System.Drawing.Size(63, 58);
             this.label6.TabIndex = 7;
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -217,9 +220,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label5.Location = new System.Drawing.Point(75, 0);
+            this.label5.Location = new System.Drawing.Point(76, 2);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(66, 51);
+            this.label5.Size = new System.Drawing.Size(63, 47);
             this.label5.TabIndex = 7;
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -230,9 +233,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label1.Location = new System.Drawing.Point(3, 0);
+            this.label1.Location = new System.Drawing.Point(5, 2);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 51);
+            this.label1.Size = new System.Drawing.Size(63, 47);
             this.label1.TabIndex = 7;
             this.label1.Text = "ID";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -244,9 +247,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label4.Location = new System.Drawing.Point(3, 181);
+            this.label4.Location = new System.Drawing.Point(5, 179);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(66, 63);
+            this.label4.Size = new System.Drawing.Size(63, 63);
             this.label4.TabIndex = 7;
             this.label4.Text = "Birth\r\nDate";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -258,9 +261,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label3.Location = new System.Drawing.Point(3, 115);
+            this.label3.Location = new System.Drawing.Point(5, 111);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 66);
+            this.label3.Size = new System.Drawing.Size(63, 66);
             this.label3.TabIndex = 7;
             this.label3.Text = "Sex";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -272,9 +275,9 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.label2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.label2.Location = new System.Drawing.Point(3, 51);
+            this.label2.Location = new System.Drawing.Point(5, 51);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 64);
+            this.label2.Size = new System.Drawing.Size(63, 58);
             this.label2.TabIndex = 7;
             this.label2.Text = "Name";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -339,7 +342,7 @@ namespace mini2_sono
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.trackBar1);
             this.panel1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.panel1.Location = new System.Drawing.Point(630, 678);
+            this.panel1.Location = new System.Drawing.Point(620, 1003);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(979, 41);
             this.panel1.TabIndex = 11;
@@ -349,9 +352,9 @@ namespace mini2_sono
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(878, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(868, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(869, 656);
+            this.pictureBox1.Size = new System.Drawing.Size(859, 981);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
@@ -359,7 +362,7 @@ namespace mini2_sono
             // pictureBox6
             // 
             this.pictureBox6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.pictureBox6.Location = new System.Drawing.Point(509, 180);
+            this.pictureBox6.Location = new System.Drawing.Point(499, 342);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(360, 300);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -378,7 +381,7 @@ namespace mini2_sono
             // pictureBox5
             // 
             this.pictureBox5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.pictureBox5.Location = new System.Drawing.Point(0, 180);
+            this.pictureBox5.Location = new System.Drawing.Point(0, 342);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(360, 300);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -388,7 +391,7 @@ namespace mini2_sono
             // pictureBox9
             // 
             this.pictureBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox9.Location = new System.Drawing.Point(609, 356);
+            this.pictureBox9.Location = new System.Drawing.Point(599, 681);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(260, 300);
             this.pictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -398,7 +401,7 @@ namespace mini2_sono
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(606, 0);
+            this.pictureBox4.Location = new System.Drawing.Point(596, 0);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(260, 300);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -408,7 +411,7 @@ namespace mini2_sono
             // pictureBox3
             // 
             this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox3.Location = new System.Drawing.Point(304, 0);
+            this.pictureBox3.Location = new System.Drawing.Point(299, 0);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(260, 300);
@@ -432,7 +435,7 @@ namespace mini2_sono
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 942F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1750, 662);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1730, 987);
             this.tableLayoutPanel2.TabIndex = 21;
             // 
             // panel2
@@ -452,7 +455,7 @@ namespace mini2_sono
             this.panel2.Controls.Add(this.pictureBox6);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(869, 656);
+            this.panel2.Size = new System.Drawing.Size(859, 981);
             this.panel2.TabIndex = 13;
             // 
             // pictureBox10
@@ -462,7 +465,7 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox10.Location = new System.Drawing.Point(-3, 3);
             this.pictureBox10.Name = "pictureBox10";
-            this.pictureBox10.Size = new System.Drawing.Size(872, 653);
+            this.pictureBox10.Size = new System.Drawing.Size(862, 978);
             this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox10.TabIndex = 21;
             this.pictureBox10.TabStop = false;
@@ -471,7 +474,7 @@ namespace mini2_sono
             // pictureBox7
             // 
             this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox7.Location = new System.Drawing.Point(0, 356);
+            this.pictureBox7.Location = new System.Drawing.Point(0, 681);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(260, 300);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -481,7 +484,7 @@ namespace mini2_sono
             // pictureBox8
             // 
             this.pictureBox8.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.pictureBox8.Location = new System.Drawing.Point(304, 356);
+            this.pictureBox8.Location = new System.Drawing.Point(299, 681);
             this.pictureBox8.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(260, 300);
@@ -489,12 +492,24 @@ namespace mini2_sono
             this.pictureBox8.TabIndex = 16;
             this.pictureBox8.TabStop = false;
             // 
+            // pictureBox11
+            // 
+            this.pictureBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureBox11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox11.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox11.Image")));
+            this.pictureBox11.Location = new System.Drawing.Point(11, 874);
+            this.pictureBox11.Name = "pictureBox11";
+            this.pictureBox11.Size = new System.Drawing.Size(142, 156);
+            this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox11.TabIndex = 22;
+            this.pictureBox11.TabStop = false;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClientSize = new System.Drawing.Size(1924, 716);
+            this.ClientSize = new System.Drawing.Size(1904, 1041);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -503,6 +518,7 @@ namespace mini2_sono
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.pictureBox11);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -525,6 +541,7 @@ namespace mini2_sono
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -568,6 +585,7 @@ namespace mini2_sono
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox10;
+        private System.Windows.Forms.PictureBox pictureBox11;
     }
 }
 
