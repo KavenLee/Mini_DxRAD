@@ -41,10 +41,12 @@ namespace mini2_sono
         {
             InitializeComponent();
             //마우스 이벤트는 따로 선언해 줘야 작동가능
-            pictureBox1.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
-            pictureBox1.Paint += new PaintEventHandler(pictureBox1_Paint);
-            pictureBox1.MouseDown += new MouseEventHandler(pictureBox1_MouseDown);
-            pictureBox1.MouseMove += new MouseEventHandler(pictureBox1_MouseMove);
+            
+                pictureBox10.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
+                pictureBox10.Paint += new PaintEventHandler(pictureBox10_Paint);
+                pictureBox10.MouseDown += new MouseEventHandler(pictureBox10_MouseDown);
+                pictureBox10.MouseMove += new MouseEventHandler(pictureBox10_MouseMove);
+            
 
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
@@ -52,6 +54,8 @@ namespace mini2_sono
             {
                 pB[i].MouseDoubleClick += new MouseEventHandler(imgZoom);
                 pB[i].MouseDown += new MouseEventHandler(imgDelete);
+                pB[i].MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
+                
             }
 
         }
@@ -66,78 +70,113 @@ namespace mini2_sono
         //마우스휠로 zoomin 하는 이벤트 
         private void imgZoom_MouseWheel(object sender, MouseEventArgs e)
         {
-
-
-            int lines = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
-            PictureBox pb = (PictureBox)sender;
-
-            if (lines > 0)
+            if (pictureBox10.Image == null)
             {
-                ratio *= 1.1F;
-                if (ratio > 100.0) ratio = 100.0;
+                PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+                for (int i = 0; i < 8; i++)
+                {
+                    if (pB[i] == (PictureBox)sender)
+                    {
+
+                        if (pB[i].Image == null)
+                        {
+                            return;
+                        }
+
+                        pictureBox10.Refresh();
+                        pictureBox10.Image = pB[i].Image;
+                        original = (Bitmap)pictureBox10.Image;
+
+                        //마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
+                        imgPoint = new Point(pictureBox10.Width / 2, pictureBox10.Height / 2);
+                        imgRect = new Rectangle(0, 0, pictureBox10.Width, pictureBox10.Height);
+                        ratio = 1.0;
+                        clickPoint = imgPoint;
+
+                        pictureBox10.Visible = true;
+                    }
+                    
+                }
+
             }
-            else if (lines < 0)
+            else
             {
-                ratio *= 0.9F;
-                if (ratio < 1) ratio = 1;
+                pictureBox10.Refresh();
+                int lines = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
+                PictureBox pb = (PictureBox)sender;
+
+                if (lines > 0)
+                {
+                    ratio *= 1.1F;
+                    if (ratio > 100.0) ratio = 100.0;
+                }
+                else if (lines < 0)
+                {
+                    ratio *= 0.9F;
+                    if (ratio < 1) ratio = 1;
+                }
+
+                imgRect.Width = (int)Math.Round(pictureBox10.Width * ratio);
+                imgRect.Height = (int)Math.Round(pictureBox10.Height * ratio);
+                imgRect.X = (int)Math.Round(pb.Width / 2 - imgPoint.X * ratio);
+                imgRect.Y = (int)Math.Round(pb.Height / 2 - imgPoint.Y * ratio);
+
+                if (imgRect.X > 0) imgRect.X = 0;
+
+                if (imgRect.Y > 0) imgRect.Y = 0;
+
+                if (imgRect.X + imgRect.Width < pictureBox10.Width) imgRect.X = pictureBox10.Width - imgRect.Width;
+
+                if (imgRect.Y + imgRect.Height < pictureBox10.Height) imgRect.Y = pictureBox10.Height - imgRect.Height;
+
+                pictureBox10.Invalidate();
             }
-
-            imgRect.Width = (int)Math.Round(pictureBox1.Width * ratio);
-            imgRect.Height = (int)Math.Round(pictureBox1.Height * ratio);
-            imgRect.X = (int)Math.Round(pb.Width / 2 - imgPoint.X * ratio);
-            imgRect.Y = (int)Math.Round(pb.Height / 2 - imgPoint.Y * ratio);
-
-            if (imgRect.X > 0) imgRect.X = 0;
-
-            if (imgRect.Y > 0) imgRect.Y = 0;
-
-            if (imgRect.X + imgRect.Width < pictureBox1.Width) imgRect.X = pictureBox1.Width - imgRect.Width;
-
-            if (imgRect.Y + imgRect.Height < pictureBox1.Height) imgRect.Y = pictureBox1.Height - imgRect.Height;
-
-            pictureBox1.Invalidate();
-
         }
         //줌인 할때 이미지 보간작업
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        private void pictureBox10_Paint(object sender, PaintEventArgs e)
         {
-            if (pictureBox1.Image != null)
+            if (pictureBox10.Image != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                e.Graphics.DrawImage(pictureBox1.Image, imgRect);
-                pictureBox1.Focus();
+                e.Graphics.DrawImage(pictureBox10.Image, imgRect);
+                pictureBox10.Focus();
             }
         }
 
         //마우스 클릭 했을 때 발생하는 이벤트
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void pictureBox10_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 clickPoint = new Point(e.X, e.Y);
+            }else if (e.Button == MouseButtons.Right)
+            {
+                pictureBox10.Visible = false;
+                pictureBox10.Image = null;
+                pictureBox10.Refresh();
             }
             else
             {
                 trackBar1.Value = 50;
                 trackBar2.Value = 0;
-                pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
+                pictureBox10.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
             }
-            pictureBox1.Invalidate();
+            pictureBox10.Invalidate();
         }
 
         //마우스가 움직일때 좌표 설정이벤트
-        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        private void pictureBox10_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 imgRect.X = imgRect.X + (int)Math.Round((double)(e.X - clickPoint.X) / 5);
                 if (imgRect.X >= 0) imgRect.X = 0;
-                if (Math.Abs(imgRect.X) >= Math.Abs(imgRect.Width - pictureBox1.Width)) imgRect.X = -(imgRect.Width - pictureBox1.Width);
+                if (Math.Abs(imgRect.X) >= Math.Abs(imgRect.Width - pictureBox10.Width)) imgRect.X = -(imgRect.Width - pictureBox10.Width);
                 imgRect.Y = imgRect.Y + (int)Math.Round((double)(e.Y - clickPoint.Y) / 5);
                 if (imgRect.Y >= 0) imgRect.Y = 0;
-                if (Math.Abs(imgRect.Y) >= Math.Abs(imgRect.Height - pictureBox1.Height)) imgRect.Y = -(imgRect.Height - pictureBox1.Height);
+                if (Math.Abs(imgRect.Y) >= Math.Abs(imgRect.Height - pictureBox10.Height)) imgRect.Y = -(imgRect.Height - pictureBox10.Height);
             }
             else
             {
@@ -145,7 +184,7 @@ namespace mini2_sono
                 imgPoint = new Point(e.X, e.Y);
             }
 
-            pictureBox1.Invalidate();
+            pictureBox10.Invalidate();
         }
 
         //더블클릭 시 오른쪽에 해당하는 이미지 크게보기.
@@ -169,11 +208,7 @@ namespace mini2_sono
                     trackBar1.Value = 50;
                     trackBar2.Value = 0;
 
-                    //마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
-                    imgPoint = new Point(pictureBox1.Width / 2, pictureBox1.Height / 2);
-                    imgRect = new Rectangle(0, 0, pictureBox1.Width, pictureBox1.Height);
-                    ratio = 1.0;
-                    clickPoint = imgPoint;
+                    
 
                     pictureBox1.Invalidate();
                 }
@@ -192,7 +227,9 @@ namespace mini2_sono
                     if (pB[i] == (PictureBox)sender)
                     {
                         pB[i].Image = null;
+                        pB[i].Image.Dispose();
                         pictureBox1.Image = null;
+                        pictureBox1.Image.Dispose();
                     }
                 }
             }
@@ -218,9 +255,12 @@ namespace mini2_sono
             for (int i = 0; i < 8; i++)
             {
                 pB[i].Image = null;
+                pB[i].Invalidate();
             }
             label_null();
 
+            pictureBox1.Invalidate();
+            pictureBox10.Invalidate();
             trackBar1.Value = 50;
             trackBar2.Value = 0;
         }
@@ -443,6 +483,7 @@ namespace mini2_sono
                 if (pB[j].Image==images)
                 {
                     pB[j].Image = null;
+                    original = null;
                     pictureBox1.Image = null;
                 }
             }
@@ -456,6 +497,10 @@ namespace mini2_sono
             }
 
         }
+
+
+
+
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             trackBar_Scroll(sender, e);
@@ -467,8 +512,8 @@ namespace mini2_sono
 
         private void trackBar_Scroll(object sender, EventArgs e)
         {
-            if (pictureBox1.Image == null) return;
-            pictureBox1.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
+            if (pictureBox10.Image == null) return;
+            pictureBox10.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
         }
 
 
@@ -499,9 +544,6 @@ namespace mini2_sono
 
             }
         }
-
-
-
 
     }
 }
