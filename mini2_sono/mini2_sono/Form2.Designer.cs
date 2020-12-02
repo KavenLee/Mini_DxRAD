@@ -64,6 +64,8 @@ namespace mini2_sono
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.pictureBox11 = new System.Windows.Forms.PictureBox();
+            this.button5 = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -116,9 +118,9 @@ namespace mini2_sono
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(87, 698);
+            this.button2.Location = new System.Drawing.Point(24, 727);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(54, 23);
+            this.button2.Size = new System.Drawing.Size(57, 23);
             this.button2.TabIndex = 2;
             this.button2.Text = "Open";
             this.button2.UseVisualStyleBackColor = false;
@@ -129,7 +131,7 @@ namespace mini2_sono
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button3.BackColor = System.Drawing.SystemColors.Control;
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(24, 727);
+            this.button3.Location = new System.Drawing.Point(84, 698);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(57, 23);
             this.button3.TabIndex = 3;
@@ -146,9 +148,9 @@ namespace mini2_sono
             this.button4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button4.BackColor = System.Drawing.SystemColors.Control;
             this.button4.ForeColor = System.Drawing.Color.Red;
-            this.button4.Location = new System.Drawing.Point(87, 727);
+            this.button4.Location = new System.Drawing.Point(84, 727);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(54, 23);
+            this.button4.Size = new System.Drawing.Size(57, 23);
             this.button4.TabIndex = 4;
             this.button4.Text = "Reset";
             this.button4.UseVisualStyleBackColor = false;
@@ -183,7 +185,7 @@ namespace mini2_sono
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label8.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label8.ForeColor = System.Drawing.Color.Yellow;
             this.label8.Location = new System.Drawing.Point(76, 179);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(63, 63);
@@ -195,7 +197,7 @@ namespace mini2_sono
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label7.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label7.ForeColor = System.Drawing.Color.Yellow;
             this.label7.Location = new System.Drawing.Point(76, 111);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(63, 66);
@@ -207,7 +209,7 @@ namespace mini2_sono
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label6.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label6.ForeColor = System.Drawing.Color.Yellow;
             this.label6.Location = new System.Drawing.Point(76, 51);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(63, 58);
@@ -219,7 +221,7 @@ namespace mini2_sono
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label5.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label5.ForeColor = System.Drawing.Color.Yellow;
             this.label5.Location = new System.Drawing.Point(76, 2);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(63, 47);
@@ -232,7 +234,7 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label1.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label1.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label1.Location = new System.Drawing.Point(5, 2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 47);
@@ -246,7 +248,7 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label4.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label4.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label4.Location = new System.Drawing.Point(5, 179);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 63);
@@ -260,7 +262,7 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label3.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label3.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label3.Location = new System.Drawing.Point(5, 111);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 66);
@@ -274,7 +276,7 @@ namespace mini2_sono
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Font = new System.Drawing.Font("D2Coding", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.label2.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.label2.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.label2.Location = new System.Drawing.Point(5, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(63, 58);
@@ -371,7 +373,7 @@ namespace mini2_sono
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Location = new System.Drawing.Point(0, -3);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(260, 300);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -401,7 +403,7 @@ namespace mini2_sono
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(596, 0);
+            this.pictureBox4.Location = new System.Drawing.Point(599, -3);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(260, 300);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -411,7 +413,7 @@ namespace mini2_sono
             // pictureBox3
             // 
             this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox3.Location = new System.Drawing.Point(299, 0);
+            this.pictureBox3.Location = new System.Drawing.Point(299, -3);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(260, 300);
@@ -434,7 +436,7 @@ namespace mini2_sono
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 942F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 987F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(1730, 987);
             this.tableLayoutPanel2.TabIndex = 21;
             // 
@@ -463,9 +465,9 @@ namespace mini2_sono
             this.pictureBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox10.Location = new System.Drawing.Point(-3, 3);
+            this.pictureBox10.Location = new System.Drawing.Point(-3, -3);
             this.pictureBox10.Name = "pictureBox10";
-            this.pictureBox10.Size = new System.Drawing.Size(862, 978);
+            this.pictureBox10.Size = new System.Drawing.Size(862, 984);
             this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox10.TabIndex = 21;
             this.pictureBox10.TabStop = false;
@@ -504,12 +506,25 @@ namespace mini2_sono
             this.pictureBox11.TabIndex = 22;
             this.pictureBox11.TabStop = false;
             // 
+            // button5
+            // 
+            this.button5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.button5.ForeColor = System.Drawing.Color.Red;
+            this.button5.Location = new System.Drawing.Point(24, 756);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(57, 23);
+            this.button5.TabIndex = 23;
+            this.button5.Text = "Save";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -586,6 +601,8 @@ namespace mini2_sono
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox10;
         private System.Windows.Forms.PictureBox pictureBox11;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 using System.IO;
 using Aspose.Imaging.FileFormats.Dicom;
 using Aspose.Imaging.ImageOptions;
@@ -13,6 +14,7 @@ using GraphicsUnit = System.Drawing.GraphicsUnit;
 using Dicom;
 using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
+using System.Threading;
 
 namespace mini2_sono
 {
@@ -34,19 +36,19 @@ namespace mini2_sono
         private Rectangle imgRect;
         private Point clickPoint;
 
-        
+
 
 
         public Form2()
         {
             InitializeComponent();
             //마우스 이벤트는 따로 선언해 줘야 작동가능
-            
-                pictureBox10.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
-                pictureBox10.Paint += new PaintEventHandler(pictureBox10_Paint);
-                pictureBox10.MouseDown += new MouseEventHandler(pictureBox10_MouseDown);
-                pictureBox10.MouseMove += new MouseEventHandler(pictureBox10_MouseMove);
-            
+
+            pictureBox10.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
+            pictureBox10.Paint += new PaintEventHandler(pictureBox10_Paint);
+            pictureBox10.MouseDown += new MouseEventHandler(pictureBox10_MouseDown);
+            pictureBox10.MouseMove += new MouseEventHandler(pictureBox10_MouseMove);
+
 
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
@@ -55,7 +57,7 @@ namespace mini2_sono
                 pB[i].MouseDoubleClick += new MouseEventHandler(imgZoom);
                 pB[i].MouseDown += new MouseEventHandler(imgDelete);
                 pB[i].MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
-                
+
             }
 
         }
@@ -95,7 +97,7 @@ namespace mini2_sono
 
                         pictureBox10.Visible = true;
                     }
-                    
+
                 }
 
             }
@@ -151,7 +153,8 @@ namespace mini2_sono
             if (e.Button == MouseButtons.Left)
             {
                 clickPoint = new Point(e.X, e.Y);
-            }else if (e.Button == MouseButtons.Right)
+            }
+            else if (e.Button == MouseButtons.Right)
             {
                 pictureBox10.Visible = false;
                 pictureBox10.Image = null;
@@ -208,7 +211,7 @@ namespace mini2_sono
                     trackBar1.Value = 50;
                     trackBar2.Value = 0;
 
-                    
+
 
                     pictureBox1.Invalidate();
                 }
@@ -226,10 +229,13 @@ namespace mini2_sono
                     //picturbox 여러 개 중 해당하는 picturebox 이미지 삭제
                     if (pB[i] == (PictureBox)sender)
                     {
-                        pB[i].Image = null;
+                        if (pB[i].Image == null)return;
+                        if (pictureBox1.Image == null) return;
+
                         pB[i].Image.Dispose();
-                        pictureBox1.Image = null;
+                        pB[i].Image = null;
                         pictureBox1.Image.Dispose();
+                        pictureBox1.Image = null;
                     }
                 }
             }
@@ -265,7 +271,7 @@ namespace mini2_sono
             trackBar2.Value = 0;
         }
 
-        //DICOM 파일을 불러오기 위한 이벤트
+        //Import 버튼 ,DICOM 파일을 불러오기 위한 이벤트
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -297,7 +303,7 @@ namespace mini2_sono
 
         }
 
-        //DICOM 파일을 사용 후 목록 전체 지우기와 변환한 jpg 파일 전체 삭제를 위한 이벤트
+        //Reset버튼,DICOM 파일을 사용 후 목록 전체 지우기와 변환한 jpg 파일 전체 삭제를 위한 이벤트
         private void button4_Click(object sender, EventArgs e)
         {
             listBox1.Items.Clear();
@@ -327,7 +333,7 @@ namespace mini2_sono
             }
         }
 
-        //리스트에 불러온 DICOM 파일을 jpg 파일로 변환 후 이미지로 보기 위한 이벤트
+        //Open 버튼,리스트에 불러온 DICOM 파일을 jpg 파일로 변환 후 이미지로 보기 위한 이벤트
         private void button2_Click(object sender, EventArgs e)
         {
             //리스트에 선택된 파일이 없다면 아무기능 하지않기
@@ -352,7 +358,7 @@ namespace mini2_sono
             //리스트박스의 이름 가져오기
             String fname = (String)listBox1.SelectedItem;
             String filename = Path.GetFileNameWithoutExtension(fname) + ".jpg";
-           
+
 
             //파일이 이미 존재 한다면 파일 생성하지않고 비어있는 picturebox에 이미지 표현하기.
             DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
@@ -372,7 +378,7 @@ namespace mini2_sono
             using (var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read))
             using (DicomImage image = new DicomImage(fileStream))
             {
-                foreach(FileInfo fi in di.GetFiles())
+                foreach (FileInfo fi in di.GetFiles())
                 {
                     if (fi.Name.Equals(filename))
                     {
@@ -439,8 +445,6 @@ namespace mini2_sono
                     label8.Text = Birth;
 
 
-                    pB[i].Show();
-
                     break;
                 }
                 else
@@ -452,7 +456,7 @@ namespace mini2_sono
         }
 
 
-        //DICOM파일 사용 후 목록에 남아있는 이름과 jpg 파일을 하나씩 지우기 위한 메서드
+        //listbox에 있는 목록의 전체 아이템들을 한번에 오픈하기 위한 메서드
         private void button3_Click(object sender, EventArgs e)
         {
 
@@ -461,40 +465,100 @@ namespace mini2_sono
                 return;
             }
 
+            DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
+
+
             //picturebox 에서 이미지 해제 하기 구현하기위한 배열선언
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
-
-
-            //리스트에 남아있는 DICOM 파일 이름 
-            String EtName = (String)listBox1.SelectedItem;
-
-            //변환된 jpg 파일을 표시하기 위해 DICOM 확장자를 jpg 로 변환
-            String FileName = Path.GetFileNameWithoutExtension(EtName) + ".jpg";
-
-            //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을 가진 파일을 이미지로 변환
-            Image images = Image.FromFile(savePath + FileName);
-            
-
-            for (int j = 0; j < 8; j++)
+            Object a=listBox1.Items;
+            foreach (string file in listBox1.SelectedItems)
             {
-                if (pB[j].Image==null)
+                //변환된 jpg 파일을 표시하기 위해 DICOM 확장자를 jpg 로 변환
+                String FileName = Path.GetFileNameWithoutExtension(file) + ".jpg";
+
+                using (var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.Read))
+                using (DicomImage image = new DicomImage(fileStream))
                 {
-                    pB[j].Image = images;
-                    original = (Bitmap)pB[0].Image;
-                    pictureBox1.Image = pB[0].Image;
-                    
+                    foreach (FileInfo fi in di.GetFiles())
+                    {
+                        if (fi.Name.Equals(FileName))
+                        {
+                            return;
+                        }
+                    }
+                    // Save as JPEG
+                    image.Save(savePath + FileName, new JpegOptions());
                 }
-                else
+
+
+                //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을 가진 파일을 이미지로 변환
+                Image images = Image.FromFile(savePath + FileName);
+
+
+
+                for (int j = 0; j < 8; j++)
                 {
-                    break;
+                    if (pB[j].Image == null)
+                    {
+                        pB[j].Image = images;
+                        original = (Bitmap)pB[0].Image;
+                        pictureBox1.Image = pB[0].Image;
+
+                        DicomFile dicomFile = new DicomFile();
+                        dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
+                        //dicomFile.WriteToConsole(); 태그확인용 
+
+
+                        string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+                        string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                        string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                        string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                        label5.Text = Id;
+                        label6.Text = Name;
+                        label7.Text = Sex;
+                        label8.Text = Birth;
+
+                        
+
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
+
+
             }
 
 
-            
 
         }
 
+        //Save 버튼 클릭시 화면 캡쳐 후 mini_jpg 폴더에 jpg 파일로 저장
+        private void button5_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.InitialDirectory = savePath;
+            saveFileDialog1.DefaultExt = "jpg";
+            saveFileDialog1.Filter = "JPEG File(*.jpg)|*.jpg|Bitmap File(*.bmp)|*.bmp|PNG File(*.png)|*.png";
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+            saveFileDialog1.Dispose();
+
+            //화면캡쳐시 savefiledialog 가 같이 찍히는 현상을 막기 위한 Thread 주기
+            Thread.Sleep(1000);
+
+            Rectangle bounds = Screen.PrimaryScreen.WorkingArea;
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+                bitmap.Save(saveFileDialog1.FileName, ImageFormat.Jpeg);
+            }
+
+        }
 
 
 
@@ -541,6 +605,7 @@ namespace mini2_sono
 
             }
         }
+
 
     }
 }
