@@ -205,7 +205,6 @@ namespace mini2_sono
 
                     //이미지 표현하기
                     original = (Bitmap)pictureBox1.Image;
-                    pictureBox1.Show();
 
                     //값 초기화
                     trackBar1.Value = 50;
@@ -229,7 +228,7 @@ namespace mini2_sono
                     //picturbox 여러 개 중 해당하는 picturebox 이미지 삭제
                     if (pB[i] == (PictureBox)sender)
                     {
-                        if (pB[i].Image == null)return;
+                        if (pB[i].Image == null) return;
                         if (pictureBox1.Image == null) return;
 
                         pB[i].Image.Dispose();
@@ -239,15 +238,6 @@ namespace mini2_sono
                     }
                 }
             }
-        }
-
-        //label의 텍스트 초기화.
-        private void label_null()
-        {
-            label5.Text = null;
-            label6.Text = null;
-            label7.Text = null;
-            label8.Text = null;
         }
 
 
@@ -263,7 +253,10 @@ namespace mini2_sono
                 pB[i].Image = null;
                 pB[i].Invalidate();
             }
-            label_null();
+            label5.Text = null;
+            label6.Text = null;
+            label7.Text = null;
+            label8.Text = null;
 
             pictureBox1.Invalidate();
             pictureBox10.Invalidate();
@@ -456,7 +449,7 @@ namespace mini2_sono
         }
 
 
-        //listbox에 있는 목록의 전체 아이템들을 한번에 오픈하기 위한 메서드
+        //All 버튼,listbox에 있는 목록의 전체 아이템들을 한번에 오픈하기 위한 메서드
         private void button3_Click(object sender, EventArgs e)
         {
 
@@ -466,69 +459,72 @@ namespace mini2_sono
             }
 
             DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
-
+            Image images = null;
 
             //picturebox 에서 이미지 해제 하기 구현하기위한 배열선언
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
-            Object a=listBox1.Items;
-            foreach (string file in listBox1.SelectedItems)
+
+            foreach (string file in listBox1.Items)
             {
-                //변환된 jpg 파일을 표시하기 위해 DICOM 확장자를 jpg 로 변환
-                String FileName = Path.GetFileNameWithoutExtension(file) + ".jpg";
+
+                String filename = Path.GetFileNameWithoutExtension(file) + ".jpg";
 
                 using (var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.Read))
                 using (DicomImage image = new DicomImage(fileStream))
                 {
                     foreach (FileInfo fi in di.GetFiles())
                     {
-                        if (fi.Name.Equals(FileName))
+                        if (fi.Name.Equals(filename))
                         {
                             return;
                         }
                     }
                     // Save as JPEG
-                    image.Save(savePath + FileName, new JpegOptions());
+                    image.Save(savePath + filename, new JpegOptions());
                 }
+            }
 
 
-                //jpg파일이 저장된곳에서 리스트에서 선택된 파일과 똑같은 이름을 가진 파일을 이미지로 변환
-                Image images = Image.FromFile(savePath + FileName);
+            for (int i = 0; i < 8; i++)
+            {
 
-
-
-                for (int j = 0; j < 8; j++)
+                if (pB[i].Image != null)
                 {
-                    if (pB[j].Image == null)
-                    {
-                        pB[j].Image = images;
-                        original = (Bitmap)pB[0].Image;
-                        pictureBox1.Image = pB[0].Image;
-
-                        DicomFile dicomFile = new DicomFile();
-                        dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
-                        //dicomFile.WriteToConsole(); 태그확인용 
-
-
-                        string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
-                        string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
-                        string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
-                        string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
-                        label5.Text = Id;
-                        label6.Text = Name;
-                        label7.Text = Sex;
-                        label8.Text = Birth;
-
-                        
-
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    continue;
                 }
+                string file=(string)listBox1.Items[i];
+                string filename = Path.GetFileNameWithoutExtension(file) + ".jpg";
+                //사이즈 맞추기
+                pB[i].SizeMode = PictureBoxSizeMode.Zoom;
+
+                //이미지 표현하기
+                images = Image.FromFile(savePath + filename);
+                pB[i].Image = images;
+                original = (Bitmap)images;
+
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox1.Image = pB[0].Image;
+
+
+                DicomFile dicomFile = new DicomFile();
+                dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
+                //dicomFile.WriteToConsole(); 태그확인용 
+
+
+                string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+                string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                label5.Text = Id;
+                label6.Text = Name;
+                label7.Text = Sex;
+                label8.Text = Birth;
+
+
 
 
             }
+
 
 
 
