@@ -316,7 +316,7 @@ namespace mini2_sono
             // label9
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label9.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label9.ForeColor = System.Drawing.SystemColors.Control;
             this.label9.Location = new System.Drawing.Point(-2, 2);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(73, 39);
@@ -327,7 +327,7 @@ namespace mini2_sono
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label10.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label10.ForeColor = System.Drawing.SystemColors.Control;
             this.label10.Location = new System.Drawing.Point(492, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(52, 40);
@@ -364,7 +364,7 @@ namespace mini2_sono
             // pictureBox6
             // 
             this.pictureBox6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.pictureBox6.Location = new System.Drawing.Point(499, 342);
+            this.pictureBox6.Location = new System.Drawing.Point(467, 342);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(360, 300);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -373,7 +373,7 @@ namespace mini2_sono
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(0, -3);
+            this.pictureBox2.Location = new System.Drawing.Point(31, 30);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(260, 300);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -383,7 +383,7 @@ namespace mini2_sono
             // pictureBox5
             // 
             this.pictureBox5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.pictureBox5.Location = new System.Drawing.Point(0, 342);
+            this.pictureBox5.Location = new System.Drawing.Point(31, 342);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(360, 300);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -393,7 +393,7 @@ namespace mini2_sono
             // pictureBox9
             // 
             this.pictureBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox9.Location = new System.Drawing.Point(599, 681);
+            this.pictureBox9.Location = new System.Drawing.Point(567, 657);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(260, 300);
             this.pictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -403,7 +403,7 @@ namespace mini2_sono
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(599, -3);
+            this.pictureBox4.Location = new System.Drawing.Point(567, 30);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(260, 300);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -413,7 +413,7 @@ namespace mini2_sono
             // pictureBox3
             // 
             this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox3.Location = new System.Drawing.Point(299, -3);
+            this.pictureBox3.Location = new System.Drawing.Point(299, 30);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(260, 300);
@@ -465,7 +465,7 @@ namespace mini2_sono
             this.pictureBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox10.Location = new System.Drawing.Point(-3, -3);
+            this.pictureBox10.Location = new System.Drawing.Point(-3, 0);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(862, 984);
             this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -476,7 +476,7 @@ namespace mini2_sono
             // pictureBox7
             // 
             this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox7.Location = new System.Drawing.Point(0, 681);
+            this.pictureBox7.Location = new System.Drawing.Point(31, 657);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(260, 300);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -486,7 +486,7 @@ namespace mini2_sono
             // pictureBox8
             // 
             this.pictureBox8.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.pictureBox8.Location = new System.Drawing.Point(299, 681);
+            this.pictureBox8.Location = new System.Drawing.Point(299, 657);
             this.pictureBox8.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(260, 300);
@@ -499,9 +499,9 @@ namespace mini2_sono
             this.pictureBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox11.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox11.Image")));
-            this.pictureBox11.Location = new System.Drawing.Point(11, 874);
+            this.pictureBox11.Location = new System.Drawing.Point(-14, 845);
             this.pictureBox11.Name = "pictureBox11";
-            this.pictureBox11.Size = new System.Drawing.Size(142, 156);
+            this.pictureBox11.Size = new System.Drawing.Size(186, 212);
             this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox11.TabIndex = 22;
             this.pictureBox11.TabStop = false;

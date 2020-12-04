@@ -536,23 +536,24 @@ namespace mini2_sono
             saveFileDialog1.InitialDirectory = savePath;
             saveFileDialog1.DefaultExt = "jpg";
             saveFileDialog1.Filter = "JPEG File(*.jpg)|*.jpg|Bitmap File(*.bmp)|*.bmp|PNG File(*.png)|*.png";
-
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-
-            }
+            saveFileDialog1.ShowDialog();
+            
+            
             saveFileDialog1.Dispose();
-
+            
             //화면캡쳐시 savefiledialog 가 같이 찍히는 현상을 막기 위한 Thread 주기
             Thread.Sleep(1000);
 
-            Rectangle bounds = Screen.PrimaryScreen.WorkingArea;
-            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
-                bitmap.Save(saveFileDialog1.FileName, ImageFormat.Jpeg);
-            }
+            
+                Rectangle bounds = Screen.PrimaryScreen.WorkingArea;
+                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+                    bitmap.Save(saveFileDialog1.FileName, ImageFormat.Jpeg);
+                }
+            
+            
 
         }
 
