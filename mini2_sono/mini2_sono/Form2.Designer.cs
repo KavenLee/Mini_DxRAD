@@ -69,6 +69,8 @@ namespace mini2_sono
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -87,6 +89,8 @@ namespace mini2_sono
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).BeginInit();
             this.tableLayoutPanel3.SuspendLayout();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -97,7 +101,7 @@ namespace mini2_sono
             this.listBox1.ForeColor = System.Drawing.Color.Yellow;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(24, 446);
+            this.listBox1.Location = new System.Drawing.Point(24, 456);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(117, 160);
             this.listBox1.TabIndex = 0;
@@ -108,7 +112,7 @@ namespace mini2_sono
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.ForeColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(24, 627);
+            this.button1.Location = new System.Drawing.Point(24, 637);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(117, 30);
             this.button1.TabIndex = 1;
@@ -121,7 +125,7 @@ namespace mini2_sono
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(24, 709);
+            this.button2.Location = new System.Drawing.Point(24, 719);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(117, 30);
             this.button2.TabIndex = 2;
@@ -134,7 +138,7 @@ namespace mini2_sono
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button3.BackColor = System.Drawing.SystemColors.Control;
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(24, 665);
+            this.button3.Location = new System.Drawing.Point(24, 675);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(117, 30);
             this.button3.TabIndex = 3;
@@ -151,7 +155,7 @@ namespace mini2_sono
             this.button4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button4.BackColor = System.Drawing.SystemColors.Control;
             this.button4.ForeColor = System.Drawing.Color.Red;
-            this.button4.Location = new System.Drawing.Point(24, 751);
+            this.button4.Location = new System.Drawing.Point(24, 761);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(117, 30);
             this.button4.TabIndex = 4;
@@ -346,7 +350,7 @@ namespace mini2_sono
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.trackBar1);
             this.panel1.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.panel1.Location = new System.Drawing.Point(178, 1002);
+            this.panel1.Location = new System.Drawing.Point(188, 1022);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(977, 41);
             this.panel1.TabIndex = 11;
@@ -356,9 +360,9 @@ namespace mini2_sono
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(868, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(873, 3);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(859, 981);
+            this.pictureBox1.Size = new System.Drawing.Size(865, 1001);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
@@ -366,7 +370,7 @@ namespace mini2_sono
             // pictureBox6
             // 
             this.pictureBox6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.pictureBox6.Location = new System.Drawing.Point(467, 342);
+            this.pictureBox6.Location = new System.Drawing.Point(472, 352);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(360, 300);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -385,7 +389,7 @@ namespace mini2_sono
             // pictureBox5
             // 
             this.pictureBox5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.pictureBox5.Location = new System.Drawing.Point(31, 342);
+            this.pictureBox5.Location = new System.Drawing.Point(31, 352);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(360, 300);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -395,7 +399,7 @@ namespace mini2_sono
             // pictureBox9
             // 
             this.pictureBox9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox9.Location = new System.Drawing.Point(567, 657);
+            this.pictureBox9.Location = new System.Drawing.Point(572, 677);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(260, 300);
             this.pictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -405,7 +409,7 @@ namespace mini2_sono
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(567, 30);
+            this.pictureBox4.Location = new System.Drawing.Point(572, 30);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(260, 300);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -415,7 +419,7 @@ namespace mini2_sono
             // pictureBox3
             // 
             this.pictureBox3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.pictureBox3.Location = new System.Drawing.Point(299, 30);
+            this.pictureBox3.Location = new System.Drawing.Point(302, 30);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(260, 300);
@@ -434,12 +438,12 @@ namespace mini2_sono
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.panel2, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(162, 12);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(171, 12);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 987F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1730, 987);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1007F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1741, 1007);
             this.tableLayoutPanel2.TabIndex = 21;
             // 
             // panel2
@@ -459,7 +463,7 @@ namespace mini2_sono
             this.panel2.Controls.Add(this.pictureBox6);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(859, 981);
+            this.panel2.Size = new System.Drawing.Size(864, 1001);
             this.panel2.TabIndex = 13;
             // 
             // pictureBox10
@@ -467,9 +471,9 @@ namespace mini2_sono
             this.pictureBox10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox10.Location = new System.Drawing.Point(-3, 0);
+            this.pictureBox10.Location = new System.Drawing.Point(0, 0);
             this.pictureBox10.Name = "pictureBox10";
-            this.pictureBox10.Size = new System.Drawing.Size(862, 984);
+            this.pictureBox10.Size = new System.Drawing.Size(864, 1004);
             this.pictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox10.TabIndex = 21;
             this.pictureBox10.TabStop = false;
@@ -478,7 +482,7 @@ namespace mini2_sono
             // pictureBox7
             // 
             this.pictureBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureBox7.Location = new System.Drawing.Point(31, 657);
+            this.pictureBox7.Location = new System.Drawing.Point(31, 677);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(260, 300);
             this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -488,7 +492,7 @@ namespace mini2_sono
             // pictureBox8
             // 
             this.pictureBox8.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.pictureBox8.Location = new System.Drawing.Point(299, 657);
+            this.pictureBox8.Location = new System.Drawing.Point(302, 677);
             this.pictureBox8.Margin = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(260, 300);
@@ -500,8 +504,8 @@ namespace mini2_sono
             // 
             this.pictureBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox11.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox11.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox11.Image")));
-            this.pictureBox11.Location = new System.Drawing.Point(-14, 845);
+            this.pictureBox11.Image = global::mini2_sono.Properties.Resources.MID로고_화이트;
+            this.pictureBox11.Location = new System.Drawing.Point(-15, 864);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(186, 212);
             this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -512,7 +516,7 @@ namespace mini2_sono
             // 
             this.button5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button5.ForeColor = System.Drawing.Color.Red;
-            this.button5.Location = new System.Drawing.Point(24, 789);
+            this.button5.Location = new System.Drawing.Point(24, 799);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(117, 30);
             this.button5.TabIndex = 23;
@@ -522,12 +526,13 @@ namespace mini2_sono
             // 
             // tableLayoutPanel3
             // 
+            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel3.ColumnCount = 2;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.label11, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.label12, 1, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(1162, 999);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(1183, 1022);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -564,12 +569,32 @@ namespace mini2_sono
             this.label12.Text = "Test Result";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel3.Controls.Add(this.pictureBox12);
+            this.panel3.Controls.Add(this.pictureBox11);
+            this.panel3.Location = new System.Drawing.Point(0, -4);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(165, 1064);
+            this.panel3.TabIndex = 25;
+            // 
+            // pictureBox12
+            // 
+            this.pictureBox12.Image = global::mini2_sono.Properties.Resources.dxsono;
+            this.pictureBox12.Location = new System.Drawing.Point(6, 15);
+            this.pictureBox12.Name = "pictureBox12";
+            this.pictureBox12.Size = new System.Drawing.Size(156, 79);
+            this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox12.TabIndex = 26;
+            this.pictureBox12.TabStop = false;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
-            this.ClientSize = new System.Drawing.Size(1904, 1041);
+            this.ClientSize = new System.Drawing.Size(1924, 1061);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.tableLayoutPanel2);
@@ -580,7 +605,7 @@ namespace mini2_sono
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.pictureBox11);
+            this.Controls.Add(this.panel3);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -606,6 +631,8 @@ namespace mini2_sono
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox11)).EndInit();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox12)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -655,6 +682,8 @@ namespace mini2_sono
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.PictureBox pictureBox12;
     }
 }
 

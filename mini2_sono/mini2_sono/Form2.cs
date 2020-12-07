@@ -14,6 +14,7 @@ using Dicom.Imaging;
 using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
+using Dicom.Log;
 
 namespace mini2_sono
 {
@@ -232,8 +233,12 @@ namespace mini2_sono
 
                         pB[i].Image.Dispose();
                         pB[i].Image = null;
-                        pictureBox1.Image.Dispose();
-                        pictureBox1.Image = null;
+                        if (pB[i].Image == pictureBox1.Image)
+                        {
+                            pictureBox1.Image.Dispose();
+                            pictureBox1.Image = null;
+                        }
+
                     }
                 }
             }
@@ -362,20 +367,36 @@ namespace mini2_sono
                     {
                         pictureBox_Open();
                     }
+                    else
+                    {
+                        //Dicom To Jpeg   
+                        var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.ReadWrite);
+                        DicomFile df = DicomFile.Open(fileStream);
+                        DicomImage image = new DicomImage(df.Dataset);
+                        string jpgPath = Path.Combine(savePath, filename);
+
+                        //방법 1
+                        Bitmap renderImage = image.RenderImage().As<Bitmap>();
+                        original = renderImage;
+                        renderImage.Save(jpgPath, ImageFormat.Jpeg);
+
+                        //방법 2
+                        //using (IImage image2 = image.RenderImage())
+                        //{
+                        //    original = image2.AsSharedBitmap();
+                        //    original.Save(jpgPath, ImageFormat.Jpeg);
+                        //    image2.Dispose();
+                        //}
+
+                        pictureBox_Open();
+
+                    }
+
                 }
             }
 
-            //Dicom To Jpeg   
-            var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read);
-            DicomFile df = DicomFile.Open(fileStream);
-            DicomImage image = new DicomImage(df.Dataset);
 
-            original = new Bitmap();
-            string jpgPath = Path.Combine(savePath, filename);
-            original.Save(jpgPath,ImageFormat.Jpeg);
-            //image.RenderImage().AsSharedBitmap().Save(jpgPath);
 
-            pictureBox_Open();
 
 
             //값 초기화
@@ -417,7 +438,7 @@ namespace mini2_sono
 
                     DicomFile dicomFile = new DicomFile();
                     dicomFile = DicomFile.Open(path + fname, FileReadOption.ReadAll);
-                    //dicomFile.WriteToConsole(); 태그확인용 
+                    //dicomFile.WriteToConsole(); //태그확인용 
 
 
                     try
@@ -475,13 +496,18 @@ namespace mini2_sono
                     {
                         return;
                     }
+
+
                 }
 
-
+                //Dicom To Jpeg   
                 var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.Read);
                 DicomFile df = DicomFile.Open(fileStream);
                 DicomImage image = new DicomImage(df.Dataset);
-
+                string jpgPath = Path.Combine(savePath, filename);
+                var renderImage = image.RenderImage().As<Image>();
+                original = (Bitmap)renderImage;
+                original.Save(jpgPath, ImageFormat.Jpeg);
             }
 
 
@@ -532,10 +558,8 @@ namespace mini2_sono
 
             }
 
-
-
-
         }
+
 
         //Save 버튼 클릭시 화면 캡쳐 후 mini_jpg 폴더에 jpg 파일로 저장
         private void button5_Click(object sender, EventArgs e)
@@ -610,7 +634,7 @@ namespace mini2_sono
             }
         }
 
-        
+
     }
 }
 
