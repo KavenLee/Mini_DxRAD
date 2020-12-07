@@ -3,8 +3,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.IO;
-using Aspose.Imaging.FileFormats.Dicom;
-using Aspose.Imaging.ImageOptions;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Graphics = System.Drawing.Graphics;
 using ImageAttributes = System.Drawing.Imaging.ImageAttributes;
@@ -12,6 +10,7 @@ using ColorMatrix = System.Drawing.Imaging.ColorMatrix;
 using Rectangle = System.Drawing.Rectangle;
 using GraphicsUnit = System.Drawing.GraphicsUnit;
 using Dicom;
+using Dicom.Imaging;
 using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
@@ -366,22 +365,15 @@ namespace mini2_sono
                 }
             }
 
+            //Dicom To Jpeg   
+            var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read);
+            DicomFile df = DicomFile.Open(fileStream);
+            DicomImage image = new DicomImage(df.Dataset);
 
-
-            using (var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.Read))
-            using (DicomImage image = new DicomImage(fileStream))
-            {
-                foreach (FileInfo fi in di.GetFiles())
-                {
-                    if (fi.Name.Equals(filename))
-                    {
-                        return;
-                    }
-                }
-                // Save as JPEG
-                image.Save(savePath + filename, new JpegOptions());
-            }
-
+            original = new Bitmap();
+            string jpgPath = Path.Combine(savePath, filename);
+            original.Save(jpgPath,ImageFormat.Jpeg);
+            //image.RenderImage().AsSharedBitmap().Save(jpgPath);
 
             pictureBox_Open();
 
@@ -428,14 +420,22 @@ namespace mini2_sono
                     //dicomFile.WriteToConsole(); 태그확인용 
 
 
-                    string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
-                    string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
-                    string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
-                    string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
-                    label5.Text = Id;
-                    label6.Text = Name;
-                    label7.Text = Sex;
-                    label8.Text = Birth;
+                    try
+                    {
+                        string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+                        string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                        string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                        string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                        label5.Text = Id;
+                        label6.Text = Name;
+                        label7.Text = Sex;
+                        label8.Text = Birth;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("DicomTag is not find", "Tag Not Find");
+
+                    }
 
 
                     break;
@@ -469,19 +469,19 @@ namespace mini2_sono
 
                 String filename = Path.GetFileNameWithoutExtension(file) + ".jpg";
 
-                using (var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.Read))
-                using (DicomImage image = new DicomImage(fileStream))
+                foreach (FileInfo fi in di.GetFiles())
                 {
-                    foreach (FileInfo fi in di.GetFiles())
+                    if (fi.Name.Equals(filename))
                     {
-                        if (fi.Name.Equals(filename))
-                        {
-                            return;
-                        }
+                        return;
                     }
-                    // Save as JPEG
-                    image.Save(savePath + filename, new JpegOptions());
                 }
+
+
+                var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.Read);
+                DicomFile df = DicomFile.Open(fileStream);
+                DicomImage image = new DicomImage(df.Dataset);
+
             }
 
 
@@ -492,7 +492,7 @@ namespace mini2_sono
                 {
                     continue;
                 }
-                string file=(string)listBox1.Items[i];
+                string file = (string)listBox1.Items[i];
                 string filename = Path.GetFileNameWithoutExtension(file) + ".jpg";
                 //사이즈 맞추기
                 pB[i].SizeMode = PictureBoxSizeMode.Zoom;
@@ -506,20 +506,27 @@ namespace mini2_sono
                 pictureBox1.Image = pB[0].Image;
 
 
-                DicomFile dicomFile = new DicomFile();
-                dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
-                //dicomFile.WriteToConsole(); 태그확인용 
+                try
+                {
+                    DicomFile dicomFile = new DicomFile();
+                    dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
+                    //dicomFile.WriteToConsole(); 태그확인용 
 
+                    string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+                    string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                    string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                    string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                    label5.Text = Id;
+                    label6.Text = Name;
+                    label7.Text = Sex;
+                    label8.Text = Birth;
 
-                string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
-                string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
-                string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
-                string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
-                label5.Text = Id;
-                label6.Text = Name;
-                label7.Text = Sex;
-                label8.Text = Birth;
+                }
+                catch (Exception)
+                {
 
+                    MessageBox.Show("DicomTag is not find", "Tag Not Find");
+                }
 
 
 
@@ -537,23 +544,23 @@ namespace mini2_sono
             saveFileDialog1.DefaultExt = "jpg";
             saveFileDialog1.Filter = "JPEG File(*.jpg)|*.jpg|Bitmap File(*.bmp)|*.bmp|PNG File(*.png)|*.png";
             saveFileDialog1.ShowDialog();
-            
-            
+
+
             saveFileDialog1.Dispose();
-            
+
             //화면캡쳐시 savefiledialog 가 같이 찍히는 현상을 막기 위한 Thread 주기
             Thread.Sleep(1000);
 
-            
-                Rectangle bounds = Screen.PrimaryScreen.WorkingArea;
-                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
-                using (Graphics g = Graphics.FromImage(bitmap))
-                {
-                    g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
-                    bitmap.Save(saveFileDialog1.FileName, ImageFormat.Jpeg);
-                }
-            
-            
+
+            Rectangle bounds = Screen.PrimaryScreen.WorkingArea;
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+                bitmap.Save(saveFileDialog1.FileName, ImageFormat.Jpeg);
+            }
+
+
 
         }
 
@@ -603,7 +610,7 @@ namespace mini2_sono
             }
         }
 
-
+        
     }
 }
 
