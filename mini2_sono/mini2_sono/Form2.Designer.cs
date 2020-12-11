@@ -71,6 +71,7 @@ namespace mini2_sono
             this.label12 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pictureBox12 = new System.Windows.Forms.PictureBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -101,9 +102,9 @@ namespace mini2_sono
             this.listBox1.ForeColor = System.Drawing.Color.Yellow;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(24, 456);
+            this.listBox1.Location = new System.Drawing.Point(12, 413);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(117, 160);
+            this.listBox1.Size = new System.Drawing.Size(141, 160);
             this.listBox1.TabIndex = 0;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -112,9 +113,10 @@ namespace mini2_sono
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button1.BackColor = System.Drawing.SystemColors.Control;
             this.button1.ForeColor = System.Drawing.Color.Red;
-            this.button1.Location = new System.Drawing.Point(24, 637);
+            this.button1.Location = new System.Drawing.Point(12, 594);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(117, 30);
+            this.button1.Size = new System.Drawing.Size(141, 30);
             this.button1.TabIndex = 1;
             this.button1.Text = "Import";
             this.button1.UseVisualStyleBackColor = false;
@@ -125,9 +127,10 @@ namespace mini2_sono
             this.button2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button2.BackColor = System.Drawing.SystemColors.Control;
             this.button2.ForeColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(24, 719);
+            this.button2.Location = new System.Drawing.Point(12, 669);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(117, 30);
+            this.button2.Size = new System.Drawing.Size(141, 30);
             this.button2.TabIndex = 2;
             this.button2.Text = "Open";
             this.button2.UseVisualStyleBackColor = false;
@@ -138,9 +141,10 @@ namespace mini2_sono
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button3.BackColor = System.Drawing.SystemColors.Control;
             this.button3.ForeColor = System.Drawing.Color.Red;
-            this.button3.Location = new System.Drawing.Point(24, 675);
+            this.button3.Location = new System.Drawing.Point(12, 632);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(117, 30);
+            this.button3.Size = new System.Drawing.Size(141, 30);
             this.button3.TabIndex = 3;
             this.button3.Text = "All Open";
             this.button3.UseVisualStyleBackColor = false;
@@ -155,9 +159,10 @@ namespace mini2_sono
             this.button4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button4.BackColor = System.Drawing.SystemColors.Control;
             this.button4.ForeColor = System.Drawing.Color.Red;
-            this.button4.Location = new System.Drawing.Point(24, 761);
+            this.button4.Location = new System.Drawing.Point(12, 706);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(117, 30);
+            this.button4.Size = new System.Drawing.Size(141, 30);
             this.button4.TabIndex = 4;
             this.button4.Text = "Reset";
             this.button4.UseVisualStyleBackColor = false;
@@ -516,9 +521,10 @@ namespace mini2_sono
             // 
             this.button5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.button5.ForeColor = System.Drawing.Color.Red;
-            this.button5.Location = new System.Drawing.Point(24, 799);
+            this.button5.Location = new System.Drawing.Point(12, 779);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(117, 30);
+            this.button5.Size = new System.Drawing.Size(141, 30);
             this.button5.TabIndex = 23;
             this.button5.Text = "Save";
             this.button5.UseVisualStyleBackColor = true;
@@ -572,8 +578,15 @@ namespace mini2_sono
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panel3.Controls.Add(this.button6);
             this.panel3.Controls.Add(this.pictureBox12);
+            this.panel3.Controls.Add(this.button5);
             this.panel3.Controls.Add(this.pictureBox11);
+            this.panel3.Controls.Add(this.listBox1);
+            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.button2);
+            this.panel3.Controls.Add(this.button4);
+            this.panel3.Controls.Add(this.button3);
             this.panel3.Location = new System.Drawing.Point(0, -4);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(165, 1064);
@@ -589,6 +602,18 @@ namespace mini2_sono
             this.pictureBox12.TabIndex = 26;
             this.pictureBox12.TabStop = false;
             // 
+            // button6
+            // 
+            this.button6.ForeColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(12, 743);
+            this.button6.Margin = new System.Windows.Forms.Padding(2);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(141, 30);
+            this.button6.TabIndex = 22;
+            this.button6.Text = "Draw";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -596,15 +621,9 @@ namespace mini2_sono
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(1924, 1061);
             this.Controls.Add(this.tableLayoutPanel3);
-            this.Controls.Add(this.button5);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.panel3);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.Font = new System.Drawing.Font("굴림", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
@@ -684,6 +703,7 @@ namespace mini2_sono
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.PictureBox pictureBox12;
+        private System.Windows.Forms.Button button6;
     }
 }
 

@@ -14,6 +14,7 @@ using Dicom.Imaging;
 using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
+using System.Drawing.Drawing2D;
 
 namespace mini2_sono
 {
@@ -33,9 +34,7 @@ namespace mini2_sono
         private double ratio = 1.0F;
         private Point imgPoint;
         private Rectangle imgRect;
-        private Point clickPoint;
-
-
+        private Point clickPoint, startPoint, endPoint;
 
 
         public Form2()
@@ -46,6 +45,7 @@ namespace mini2_sono
             pictureBox10.MouseWheel += new MouseEventHandler(imgZoom_MouseWheel);
             pictureBox10.Paint += new PaintEventHandler(pictureBox10_Paint);
             pictureBox10.MouseDown += new MouseEventHandler(pictureBox10_MouseDown);
+            pictureBox10.MouseUp += new MouseEventHandler(pictureBox10_MouseUp);
             pictureBox10.MouseMove += new MouseEventHandler(pictureBox10_MouseMove);
 
 
@@ -100,6 +100,8 @@ namespace mini2_sono
                 }
 
             }
+            else if (this.Cursor == Cursors.Hand) return;
+
             else
             {
                 pictureBox10.Refresh();
@@ -136,10 +138,20 @@ namespace mini2_sono
         //줌인 할때 이미지 보간작업
         private void pictureBox10_Paint(object sender, PaintEventArgs e)
         {
-            if (pictureBox10.Image != null)
+            if (this.Cursor == Cursors.Hand)
+            {
+                Matrix scaleMatrix = new Matrix();
+                scaleMatrix.Scale(3f, 3f);
+                e.Graphics.MultiplyTransform(scaleMatrix);
+                e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
+            }
+            else if (pictureBox10.Image != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
+                e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawImage(pictureBox10.Image, imgRect);
                 pictureBox10.Focus();
             }
@@ -149,7 +161,11 @@ namespace mini2_sono
 
         private void pictureBox10_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
+            {
+                startPoint = new Point(e.X,e.Y);
+            }
+            else if (e.Button == MouseButtons.Left)
             {
                 clickPoint = new Point(e.X, e.Y);
             }
@@ -168,10 +184,39 @@ namespace mini2_sono
             pictureBox10.Invalidate();
         }
 
+        //마우스 클릭을 땟을 때 발생하는 이벤트
+        private void pictureBox10_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
+            {
+                Pen p = new Pen(Brushes.Red, 8);
+                p.DashStyle = DashStyle.Solid;
+                p.EndCap = LineCap.ArrowAnchor;
+
+                Graphics g = Graphics.FromImage(pictureBox10.Image);
+                
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.DrawLine(p, startPoint, endPoint);
+
+                    p.Dispose();
+                    g.Dispose();
+                
+
+                startPoint = Point.Empty;
+                endPoint = Point.Empty;
+            }
+        }
+
+
+        
         //마우스가 움직일때 좌표 설정이벤트
         private void pictureBox10_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
+            {
+                endPoint = new Point(e.X,e.Y);
+            }
+            else if (e.Button == MouseButtons.Left)
             {
                 imgRect.X = imgRect.X + (int)Math.Round((double)(e.X - clickPoint.X) / 5);
                 if (imgRect.X >= 0) imgRect.X = 0;
@@ -185,6 +230,7 @@ namespace mini2_sono
                 LastPoint = e.Location;
                 imgPoint = new Point(e.X, e.Y);
             }
+
 
             pictureBox10.Invalidate();
         }
@@ -228,19 +274,16 @@ namespace mini2_sono
                     if (pB[i].Equals((PictureBox)sender))
                     {
                         if (pB[i].Image == null) return;
-
                         if (pictureBox1.Image == null) return;
-
 
                         if (pB[i].Image == pictureBox1.Image)
                         {
-                            pB[i].Image = null;
-                            pB[i].Invalidate();
-
                             pictureBox1.Image = null;
                             pictureBox1.Invalidate();
-
                         }
+
+                        pB[i].Image = null;
+                        pB[i].Invalidate();
 
 
                     }
@@ -256,6 +299,7 @@ namespace mini2_sono
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             pictureBox1.Image = null;
+            pictureBox10.Image = null;
             for (int i = 0; i < 8; i++)
             {
                 pB[i].Image = null;
@@ -486,19 +530,26 @@ namespace mini2_sono
                     }
 
                 }
-                    
-                        //Dicom To Jpeg   
-                        var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.ReadWrite);
-                        DicomFile df = DicomFile.Open(fileStream);
-                        DicomImage image = new DicomImage(df.Dataset);
-                        string jpgPath = Path.Combine(savePath, filename);
-                        var renderImage = image.RenderImage().As<Image>();
-                        original = (Bitmap)renderImage;
-                        renderImage.Save(jpgPath, ImageFormat.Jpeg);
-                        renderImage.Dispose();
-                        fileStream.Close();
-                    
-                   
+
+                try
+                {
+                    //Dicom To Jpeg   
+                    var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.ReadWrite);
+                    DicomFile df = DicomFile.Open(fileStream);
+                    DicomImage image = new DicomImage(df.Dataset);
+                    string jpgPath = Path.Combine(savePath, filename);
+                    Bitmap renderImage = image.RenderImage().As<Bitmap>();
+                    original = renderImage;
+                    renderImage.Save(jpgPath, ImageFormat.Jpeg);
+                    renderImage.Dispose();
+                    fileStream.Close();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("File Already created", "File Already creadted");
+                }
+
+
 
             }
 
@@ -632,7 +683,7 @@ namespace mini2_sono
             float contrast = contrastValue / 100.0f;
             var bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
 
-            using (var g = Graphics.FromImage(bitmap))
+            using (var g = Graphics.FromImage(bitmap)) 
             using (var attributes = new ImageAttributes())
             {
                 float[][] matrix = {
@@ -646,6 +697,9 @@ namespace mini2_sono
 
                 ColorMatrix colorMatrix = new ColorMatrix(matrix);
                 attributes.SetColorMatrix(colorMatrix);
+
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.SmoothingMode = SmoothingMode.HighSpeed;
                 g.DrawImage(image, new Rectangle(0, 0, bitmap.Width, bitmap.Height),
                     0, 0, bitmap.Width, bitmap.Height, GraphicsUnit.Pixel, attributes);
                 return bitmap;
@@ -653,7 +707,21 @@ namespace mini2_sono
             }
         }
 
+        //Draw 버튼, 클릭시 마우스 커서 모양 변경 후 그림 그리기 위한 준비.
+        private void button6_Click(object sender, EventArgs e)
+        {
 
+            if (this.Cursor == Cursors.Hand)
+            {
+                this.Cursor = DefaultCursor;
+            }
+            else
+            {
+                this.Cursor = Cursors.Hand;
+            }
+
+
+        }
     }
 }
 
