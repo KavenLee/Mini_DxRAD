@@ -35,6 +35,7 @@ namespace mini2_sono
         private Point imgPoint;
         private Rectangle imgRect;
         private Point clickPoint, startPoint, endPoint;
+        private double zoomRatio = 1.0F;
 
 
         public Form2()
@@ -89,19 +90,19 @@ namespace mini2_sono
                         original = (Bitmap)pictureBox10.Image;
 
                         //마우스 이벤트를 위한 좌표와 확대/축소를 위한 사각형,확대/축소 비율선언
-                        imgPoint = new Point(pictureBox10.Width / 2, pictureBox10.Height / 2);
+                        imgPoint = new Point(pictureBox10.Width / 3, pictureBox10.Height / 3);
                         imgRect = new Rectangle(0, 0, pictureBox10.Width, pictureBox10.Height);
                         ratio = 1.0;
                         clickPoint = imgPoint;
 
                         pictureBox10.Visible = true;
+
+                        break;
                     }
 
                 }
 
             }
-            else if (this.Cursor == Cursors.Hand) return;
-
             else
             {
                 pictureBox10.Refresh();
@@ -119,6 +120,8 @@ namespace mini2_sono
                     if (ratio < 1) ratio = 1;
                 }
 
+                zoomRatio = ratio;
+
                 imgRect.Width = (int)Math.Round(pictureBox10.Width * ratio);
                 imgRect.Height = (int)Math.Round(pictureBox10.Height * ratio);
                 imgRect.X = (int)Math.Round(pb.Width / 2 - imgPoint.X * ratio);
@@ -132,17 +135,19 @@ namespace mini2_sono
 
                 if (imgRect.Y + imgRect.Height < pictureBox10.Height) imgRect.Y = pictureBox10.Height - imgRect.Height;
 
-                pictureBox10.Invalidate();
             }
+
+            pictureBox10.Invalidate();
+
         }
+
+
         //줌인 할때 이미지 보간작업
         private void pictureBox10_Paint(object sender, PaintEventArgs e)
         {
-            if (this.Cursor == Cursors.Hand)
+            //이미지에 선그리기 작업 시 보간작업
+            if (this.Cursor == Cursors.Hand && pictureBox10.Image != null)
             {
-                Matrix scaleMatrix = new Matrix();
-                scaleMatrix.Scale(3f, 3f);
-                e.Graphics.MultiplyTransform(scaleMatrix);
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
@@ -150,11 +155,12 @@ namespace mini2_sono
             else if (pictureBox10.Image != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                e.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                e.Graphics.DrawImage(pictureBox10.Image, imgRect);
-                pictureBox10.Focus();
             }
+            e.Graphics.DrawImage(pictureBox10.Image, imgRect);
+            pictureBox10.Focus();
         }
 
         //마우스 클릭 했을 때 발생하는 이벤트
@@ -163,7 +169,20 @@ namespace mini2_sono
         {
             if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
             {
-                startPoint = new Point(e.X,e.Y);
+                //원본이미지를 찾고 원본이미지와 확대된 이미지 비교 후 정확한 좌표값을 찾기위한 작업
+                PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+                for (int i = 0; i < pB.Length; i++)
+                {
+                    if (pictureBox10.Image == pB[i].Image)
+                    {
+                        double wRatio = (double)pB[i].Image.Width / pictureBox10.Width;
+                        double hRatio = (double)pB[i].Image.Height / pictureBox10.Height;
+
+                        startPoint = new Point((int)((e.X - imgRect.X) * wRatio / zoomRatio), (int)((e.Y - imgRect.Y) * hRatio / zoomRatio));
+                        break;
+                    }
+                }
+
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -180,8 +199,9 @@ namespace mini2_sono
                 trackBar1.Value = 50;
                 trackBar2.Value = 0;
                 pictureBox10.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
+                pictureBox10.Invalidate();
+
             }
-            pictureBox10.Invalidate();
         }
 
         //마우스 클릭을 땟을 때 발생하는 이벤트
@@ -189,18 +209,18 @@ namespace mini2_sono
         {
             if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
             {
-                Pen p = new Pen(Brushes.Red, 8);
+                Pen p = new Pen(Brushes.Red, 1);
                 p.DashStyle = DashStyle.Solid;
                 p.EndCap = LineCap.ArrowAnchor;
 
-                Graphics g = Graphics.FromImage(pictureBox10.Image);
-                
-                    g.SmoothingMode = SmoothingMode.HighQuality;
-                    g.DrawLine(p, startPoint, endPoint);
+                Graphics g = Graphics.FromImage(original);
 
-                    p.Dispose();
-                    g.Dispose();
-                
+
+                g.DrawLine(p, startPoint, endPoint);
+
+                p.Dispose();
+                g.Dispose();
+
 
                 startPoint = Point.Empty;
                 endPoint = Point.Empty;
@@ -208,20 +228,32 @@ namespace mini2_sono
         }
 
 
-        
+
         //마우스가 움직일때 좌표 설정이벤트
         private void pictureBox10_MouseMove(object sender, MouseEventArgs e)
         {
             if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
             {
-                endPoint = new Point(e.X,e.Y);
+                //원본이미지를 찾고 원본이미지와 확대된 이미지 비교 후 정확한 좌표값을 찾기위한 작업
+                PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+                for (int i = 0; i < pB.Length; i++)
+                {
+                    if (pictureBox10.Image == pB[i].Image)
+                    {
+                        double wRatio = (double)pB[i].Image.Width / pictureBox10.Width;
+                        double hRatio = (double)pB[i].Image.Height / pictureBox10.Height;
+
+                        endPoint = new Point((int)((e.X - imgRect.X) * wRatio / zoomRatio), (int)((e.Y - imgRect.Y) * hRatio / zoomRatio));
+                        break;
+                    }
+                }
             }
             else if (e.Button == MouseButtons.Left)
             {
-                imgRect.X = imgRect.X + (int)Math.Round((double)(e.X - clickPoint.X) / 5);
+                imgRect.X = imgRect.X + (int)Math.Round((double)(e.X - clickPoint.X) / 10);
                 if (imgRect.X >= 0) imgRect.X = 0;
                 if (Math.Abs(imgRect.X) >= Math.Abs(imgRect.Width - pictureBox10.Width)) imgRect.X = -(imgRect.Width - pictureBox10.Width);
-                imgRect.Y = imgRect.Y + (int)Math.Round((double)(e.Y - clickPoint.Y) / 5);
+                imgRect.Y = imgRect.Y + (int)Math.Round((double)(e.Y - clickPoint.Y) / 10);
                 if (imgRect.Y >= 0) imgRect.Y = 0;
                 if (Math.Abs(imgRect.Y) >= Math.Abs(imgRect.Height - pictureBox10.Height)) imgRect.Y = -(imgRect.Height - pictureBox10.Height);
             }
@@ -229,10 +261,10 @@ namespace mini2_sono
             {
                 LastPoint = e.Location;
                 imgPoint = new Point(e.X, e.Y);
+                pictureBox10.Invalidate();
             }
 
 
-            pictureBox10.Invalidate();
         }
 
         //더블클릭 시 오른쪽에 해당하는 이미지 크게보기.
@@ -247,9 +279,6 @@ namespace mini2_sono
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                     pictureBox1.Image = pB[i].Image;
 
-
-                    //이미지 표현하기
-                    original = (Bitmap)pictureBox1.Image;
 
                     //값 초기화
                     trackBar1.Value = 50;
@@ -683,7 +712,7 @@ namespace mini2_sono
             float contrast = contrastValue / 100.0f;
             var bitmap = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
 
-            using (var g = Graphics.FromImage(bitmap)) 
+            using (var g = Graphics.FromImage(bitmap))
             using (var attributes = new ImageAttributes())
             {
                 float[][] matrix = {
