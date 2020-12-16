@@ -15,6 +15,7 @@ using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace mini2_sono
 {
@@ -26,7 +27,7 @@ namespace mini2_sono
         private String savePath = "C:\\mini_jpg\\";
         //이미지 밝기 조절을 위한 비트맵 변수 생성
         private Bitmap original = null;
-
+        private DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
         //---------------
         //이미지 처리를 위한 변수 선언
         private Point LastPoint;
@@ -201,7 +202,7 @@ namespace mini2_sono
                 pictureBox10.Image = AdjustBrightnessContrast(original, trackBar1.Value, trackBar2.Value);
 
             }
-                pictureBox10.Invalidate();
+            pictureBox10.Invalidate();
         }
 
         //마우스 클릭을 땟을 때 발생하는 이벤트
@@ -262,7 +263,7 @@ namespace mini2_sono
                 LastPoint = e.Location;
                 imgPoint = new Point(e.X, e.Y);
             }
-                pictureBox10.Invalidate();
+            pictureBox10.Invalidate();
 
 
         }
@@ -307,12 +308,12 @@ namespace mini2_sono
 
                         if (pB[i].Image == pictureBox1.Image)
                         {
+                            pictureBox1.Image.Dispose();
                             pictureBox1.Image = null;
-                            pictureBox1.Invalidate();
                         }
 
+                        pB[i].Image.Dispose();
                         pB[i].Image = null;
-                        pB[i].Invalidate();
 
 
                     }
@@ -328,17 +329,27 @@ namespace mini2_sono
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             pictureBox1.Image = null;
+            pictureBox1.Image.Dispose();
             pictureBox10.Image = null;
-            for (int i = 0; i < 8; i++)
+            pictureBox10.Image.Dispose();
+            for (int i = 0; i < pB.Length; i++)
             {
+                pB[i].Image.Dispose();
                 pB[i].Image = null;
-                pB[i].Invalidate();
             }
             label5.Text = null;
             label6.Text = null;
             label7.Text = null;
             label8.Text = null;
             label12.Text = null;
+
+
+            label5.Dispose();
+            label6.Dispose();
+            label7.Dispose();
+            label8.Dispose();
+            label12.Dispose();
+
 
             pictureBox1.Invalidate();
             pictureBox10.Invalidate();
@@ -387,7 +398,7 @@ namespace mini2_sono
             Image_null();
 
             //DICOM 파일 변환 한 jpg파일이 모여있는 폴더 삭제를 위한 작업
-            DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
+
 
             if (di.GetFiles() != null)
             {
@@ -425,9 +436,6 @@ namespace mini2_sono
         //파일 변환 및 보기를 위한 메서드
         private void fileOpen()
         {
-            //이미지 밝기조절용 비트맵을 초기화.
-            original = null;
-
 
             //리스트박스의 이름 가져오기
             String fname = (String)listBox1.SelectedItem;
@@ -435,39 +443,66 @@ namespace mini2_sono
 
 
             //파일이 이미 존재 한다면 파일 생성하지않고 비어있는 picturebox에 이미지 표현하기.
-            DirectoryInfo di = Directory.CreateDirectory("C:\\mini_jpg");
 
-
-            foreach (FileInfo fi in di.GetFiles())
-            {
-
-                if (fi.Name.Equals(filename))
-                {
-                    pictureBox_Open(fname, filename);
-                    break;
-                }
-
-            }
 
 
             //방법 1
             try
             {
+
+
+
                 //Dicom To Jpeg   
-                var fileStream = new FileStream(path + fname, FileMode.Open, FileAccess.ReadWrite);
-                DicomFile df = DicomFile.Open(fileStream);
-                DicomImage image = new DicomImage(df.Dataset);
+                using (var fileStream = new FileStream(path + fname, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+
+                    DicomFile df = DicomFile.Open(fileStream);
+                    dicom_Tag(fname, df);
+
+                    DicomImage image = new DicomImage(df.Dataset);
+
+                    string jpgPath = Path.Combine(savePath, filename);
+                    Bitmap renderImage = image.RenderImage().As<Bitmap>();
+
+                    PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
 
 
-                string jpgPath = Path.Combine(savePath, filename);
-                Bitmap renderImage = image.RenderImage().As<Bitmap>();
-                original = renderImage;
-                renderImage.Save(jpgPath, ImageFormat.Jpeg);
-                renderImage.Dispose();
+
+
+                    foreach (FileInfo fi in di.GetFiles())
+                    {
+
+                        if (fi.Name.Equals(filename))
+                        {
+                            pictureBox_Open(fname, filename);
+                            break;
+                        }
+
+                    }
+                    for (int i = 0; i < pB.Length; i++)
+                    {
+                        if (pB[i].Image == null)
+                        {
+                            pB[i].Image = renderImage;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                    }
+
+                    renderImage.Save(jpgPath, ImageFormat.Jpeg);
+
+                    renderImage.Dispose();
+                    fileStream.Dispose();
+                }
+
             }
-            catch (Exception)
+            catch (DicomFileException)
             {
-                pictureBox_Open(fname, filename);
+                MessageBox.Show("File Already Created", "File don't Created");
             }
 
             //방법 2
@@ -511,14 +546,23 @@ namespace mini2_sono
                     //이미지 표현하기
                     images = Image.FromFile(savePath + filename);
                     pB[i].Image = images;
-                    original = (Bitmap)images;
+                    images.Dispose();
+
                     if (pictureBox1.Image == null)
                     {
                         pictureBox1.Image = pB[i].Image;
                     }
 
-                    dicom_Tag(file);
 
+                    using (var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                    {
+
+                        DicomFile df = DicomFile.Open(fileStream);
+
+                        dicom_Tag(file, df);
+
+                        fileStream.Dispose();
+                    }
 
                     break;
                 }
@@ -540,7 +584,7 @@ namespace mini2_sono
                 return;
             }
 
-            DirectoryInfo di = new DirectoryInfo("C:\\mini_jpg");
+
             Image images = null;
 
             //picturebox 에서 이미지 해제 하기 구현하기위한 배열선언
@@ -563,7 +607,7 @@ namespace mini2_sono
                 try
                 {
                     //Dicom To Jpeg   
-                    var fileStream = new FileStream(path + file, FileMode.Open, FileAccess.ReadWrite);
+                    var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
                     DicomFile df = DicomFile.Open(fileStream);
                     DicomImage image = new DicomImage(df.Dataset);
                     string jpgPath = Path.Combine(savePath, filename);
@@ -572,6 +616,7 @@ namespace mini2_sono
                     renderImage.Save(jpgPath, ImageFormat.Jpeg);
                     renderImage.Dispose();
                     fileStream.Close();
+
                 }
                 catch (Exception)
                 {
@@ -583,7 +628,7 @@ namespace mini2_sono
             }
 
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < pB.Length; i++)
             {
 
                 if (pB[i].Image != null)
@@ -598,14 +643,18 @@ namespace mini2_sono
                 //이미지 표현하기
                 images = Image.FromFile(savePath + filename);
                 pB[i].Image = images;
-                original = (Bitmap)images;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 pictureBox1.Image = pB[0].Image;
+                pB[0].Image.Dispose();
                 pictureBox1.Invalidate();
 
+                using (var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
+                {
+                    DicomFile df = DicomFile.Open(fileStream);
+                    dicom_Tag(file, df);
 
-                dicom_Tag(file);
+                }
 
 
 
@@ -615,13 +664,12 @@ namespace mini2_sono
 
 
         //dicom tag 표시 하기위한 메서드
-        private void dicom_Tag(string file)
+        private void dicom_Tag(string file, DicomFile dicomFile)
         {
 
             try
             {
-                DicomFile dicomFile = new DicomFile();
-                dicomFile = DicomFile.Open(path + file, FileReadOption.ReadAll);
+
                 //dicomFile.WriteToConsole(); //태그확인용 
                 dicomFile.Dataset.AddOrUpdate(DicomTag.RegionOfResidence, "Normal");
                 dicomFile.Dataset.AddOrUpdate(DicomTag.PatientTelephoneNumbers, "01000000000");
@@ -632,6 +680,7 @@ namespace mini2_sono
                 string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
                 string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
                 string residence = dicomFile.Dataset.GetSingleValue<string>(DicomTag.RegionOfResidence);
+
 
                 if (label5.Text.Equals(Id))
                 {
@@ -652,9 +701,9 @@ namespace mini2_sono
             {
                 MessageBox.Show("Image Already Opened", "Can't Open Image");
             }
-            catch (Exception)
+            catch (DicomDataException)
             {
-                MessageBox.Show("DicomTag is not find", "Tag Not Find");
+                return;
             }
         }
 
