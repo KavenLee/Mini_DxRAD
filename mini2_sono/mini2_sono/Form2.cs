@@ -16,6 +16,7 @@ using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
+using Dicom.Log;
 
 namespace mini2_sono
 {
@@ -329,12 +330,10 @@ namespace mini2_sono
             //for문을 돌리기 위해 선언한 pictureBox 배열
             PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
             pictureBox1.Image = null;
-            pictureBox1.Image.Dispose();
             pictureBox10.Image = null;
-            pictureBox10.Image.Dispose();
             for (int i = 0; i < pB.Length; i++)
             {
-                pB[i].Image.Dispose();
+
                 pB[i].Image = null;
             }
             label5.Text = null;
@@ -444,13 +443,9 @@ namespace mini2_sono
 
             //파일이 이미 존재 한다면 파일 생성하지않고 비어있는 picturebox에 이미지 표현하기.
 
-
-
             //방법 1
             try
             {
-
-
 
                 //Dicom To Jpeg   
                 using (var fileStream = new FileStream(path + fname, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
@@ -465,8 +460,6 @@ namespace mini2_sono
                     Bitmap renderImage = image.RenderImage().As<Bitmap>();
 
                     PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
-
-
 
 
                     foreach (FileInfo fi in di.GetFiles())
@@ -493,10 +486,18 @@ namespace mini2_sono
 
                     }
 
-                    renderImage.Save(jpgPath, ImageFormat.Jpeg);
+                    if (File.Exists(jpgPath))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        renderImage.Save(jpgPath, ImageFormat.Jpeg);
+                    }
 
                     renderImage.Dispose();
-                    fileStream.Dispose();
+                    fileStream.Close();
+
                 }
 
             }
@@ -546,7 +547,6 @@ namespace mini2_sono
                     //이미지 표현하기
                     images = Image.FromFile(savePath + filename);
                     pB[i].Image = images;
-                    images.Dispose();
 
                     if (pictureBox1.Image == null)
                     {
@@ -561,7 +561,6 @@ namespace mini2_sono
 
                         dicom_Tag(file, df);
 
-                        fileStream.Dispose();
                     }
 
                     break;
@@ -601,41 +600,44 @@ namespace mini2_sono
                     {
                         pictureBox_Open(file, filename);
                     }
+                    else
+                    {
+                        break;
+                    }
 
                 }
+                //Dicom To Jpeg   
+                var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 
-                try
+                DicomFile df = DicomFile.Open(fileStream);
+                DicomImage image = new DicomImage(df.Dataset);
+                string jpgPath = Path.Combine(savePath, filename);
+                Bitmap renderImage = image.RenderImage().As<Bitmap>();
+                original = renderImage;
+
+                if (File.Exists(jpgPath))
                 {
-                    //Dicom To Jpeg   
-                    var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-                    DicomFile df = DicomFile.Open(fileStream);
-                    DicomImage image = new DicomImage(df.Dataset);
-                    string jpgPath = Path.Combine(savePath, filename);
-                    Bitmap renderImage = image.RenderImage().As<Bitmap>();
-                    original = renderImage;
+                    return;
+                }
+                else
+                {
                     renderImage.Save(jpgPath, ImageFormat.Jpeg);
-                    renderImage.Dispose();
-                    fileStream.Close();
-
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("File Already created", "File Already creadted");
                 }
 
-
+                renderImage.Dispose();
+                fileStream.Close();
 
             }
 
 
             for (int i = 0; i < pB.Length; i++)
             {
+                string file = (string)listBox1.Items[i];
 
                 if (pB[i].Image != null)
                 {
                     continue;
                 }
-                string file = (string)listBox1.Items[i];
                 string filename = Path.GetFileNameWithoutExtension(file) + ".jpg";
                 //사이즈 맞추기
                 pB[i].SizeMode = PictureBoxSizeMode.Zoom;
@@ -645,8 +647,10 @@ namespace mini2_sono
                 pB[i].Image = images;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                pictureBox1.Image = pB[0].Image;
-                pB[0].Image.Dispose();
+                if (pictureBox1.Image == null)
+                {
+                    pictureBox1.Image = pB[0].Image;
+                }
                 pictureBox1.Invalidate();
 
                 using (var fileStream = new FileStream(path + file, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
@@ -670,30 +674,59 @@ namespace mini2_sono
             try
             {
 
-                //dicomFile.WriteToConsole(); //태그확인용 
+                dicomFile.WriteToConsole(); //태그확인용 
                 dicomFile.Dataset.AddOrUpdate(DicomTag.RegionOfResidence, "Normal");
                 dicomFile.Dataset.AddOrUpdate(DicomTag.PatientTelephoneNumbers, "01000000000");
                 dicomFile.Save(file);
 
-                string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
-                string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
-                string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
-                string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
-                string residence = dicomFile.Dataset.GetSingleValue<string>(DicomTag.RegionOfResidence);
 
-
-                if (label5.Text.Equals(Id))
+                if (dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID) == null)
                 {
-                    return;
+                    label5.Text = "anonymous";
                 }
                 else
                 {
+                    string Id = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
                     label5.Text = Id;
-                    label6.Text = Name;
-                    label7.Text = Sex;
-                    label8.Text = Birth;
-                    label12.Text = residence;
                 }
+
+
+                if (dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName) == null)
+                {
+                    label6.Text = "anonymous";
+                }
+                else
+                {
+                    string Name = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientName);
+                    label6.Text = Name;
+                }
+
+
+                if (dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex) == null)
+                {
+                    label7.Text = "anonymous";
+                }
+                else
+                {
+                    string Sex = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientSex);
+                    label7.Text = Sex;
+                }
+
+
+                if (dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate) == null)
+                {
+                    label8.Text = "anonymous";
+                }
+                else
+                {
+                    string Birth = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientBirthDate);
+                    label8.Text = Birth;
+                }
+
+                string residence = dicomFile.Dataset.GetSingleValue<string>(DicomTag.RegionOfResidence);
+
+                label12.Text = residence;
+
 
 
             }
@@ -703,7 +736,10 @@ namespace mini2_sono
             }
             catch (DicomDataException)
             {
-                return;
+                label5.Text = "anonymous";
+                label6.Text = "anonymous";
+                label7.Text = "anonymous";
+                label8.Text = "anonymous";
             }
         }
 
