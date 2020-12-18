@@ -486,6 +486,7 @@ namespace mini2_sono
 
                     }
 
+                    //이미지 저장하기 전 파일이 존재하는지 확인 후 저장.
                     if (File.Exists(jpgPath))
                     {
                         return;
@@ -615,6 +616,7 @@ namespace mini2_sono
                 Bitmap renderImage = image.RenderImage().As<Bitmap>();
                 original = renderImage;
 
+                //이미지 저장하기 전 파일이 존재하는지 확인 후 저장.
                 if (File.Exists(jpgPath))
                 {
                     return;
