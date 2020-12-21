@@ -37,8 +37,12 @@ namespace mini2_sono
         private Point imgPoint;
         private Rectangle imgRect;
         private Point clickPoint, startPoint, endPoint;
+        
+        //확대된 이미지의 정확한 좌표값을 구하기 위한 변수
         private double zoomRatio = 1.0F;
 
+        //거리구하기 위한 구별을 위한 bool 변수선언
+        private bool clicked=true;
 
         public Form2()
         {
@@ -107,6 +111,8 @@ namespace mini2_sono
             }
             else
             {
+                if (this.Cursor == Cursors.Hand | this.Cursor == Cursors.SizeWE) return;
+
                 pictureBox10.Refresh();
                 int lines = e.Delta * SystemInformation.MouseWheelScrollLines / 120;
                 PictureBox pb = (PictureBox)sender;
@@ -153,6 +159,11 @@ namespace mini2_sono
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
+            }else if (this.Cursor == Cursors.SizeWE && pictureBox10.Image != null)
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
             }
             else if (pictureBox10.Image != null)
             {
@@ -162,17 +173,28 @@ namespace mini2_sono
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 pictureBox10.Focus();
             }
-            e.Graphics.DrawImage(original, imgRect);
+
+
+            try
+            {
+                e.Graphics.DrawImage(original, imgRect);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
         }
 
         //마우스 클릭 했을 때 발생하는 이벤트
 
         private void pictureBox10_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
-            {
                 //원본이미지를 찾고 원본이미지와 확대된 이미지 비교 후 정확한 좌표값을 찾기위한 작업
                 PictureBox[] pB = new PictureBox[8] { pictureBox2, pictureBox3, pictureBox4, pictureBox5, pictureBox6, pictureBox7, pictureBox8, pictureBox9 };
+
+            if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Left)
+            {
                 for (int i = 0; i < pB.Length; i++)
                 {
                     if (pictureBox10.Image == pB[i].Image)
@@ -185,6 +207,51 @@ namespace mini2_sono
                     }
                 }
 
+            }else if (this.Cursor==Cursors.SizeWE && e.Button==MouseButtons.Left)
+            {
+                if (clicked)
+                {
+                    for (int i = 0; i < pB.Length; i++)
+                    {
+                        if (pictureBox10.Image == pB[i].Image)
+                        {
+                            double wRatio = (double)pB[i].Image.Width / pictureBox10.Width;
+                            double hRatio = (double)pB[i].Image.Height / pictureBox10.Height;
+
+                            startPoint = new Point((int)((e.X - imgRect.X) * wRatio / zoomRatio), (int)((e.Y - imgRect.Y) * hRatio / zoomRatio));
+                            break;
+                        }
+                    }
+                    clicked = false;
+                }
+                else
+                {
+                    for (int i = 0; i < pB.Length; i++)
+                    {
+                        if (pictureBox10.Image == pB[i].Image)
+                        {
+                            double wRatio = (double)pB[i].Image.Width / pictureBox10.Width;
+                            double hRatio = (double)pB[i].Image.Height / pictureBox10.Height;
+
+                            endPoint = new Point((int)((e.X - imgRect.X) * wRatio / zoomRatio), (int)((e.Y - imgRect.Y) * hRatio / zoomRatio));
+                            break;
+                        }
+                    }
+
+                    Graphics g = Graphics.FromImage(original);
+
+                    g.DrawLine(Pens.Red,startPoint,endPoint);
+
+                    double length = Math.Sqrt(Math.Pow(endPoint.X-startPoint.X,2)+ Math.Pow(endPoint.Y - startPoint.Y, 2));
+                    double dpc = length * 2.54;
+
+                    double lengthToCm = dpc / 96;
+                    //(int)(pixel * 2.54 / 96) 픽셀을 cm 단위로 변환
+                    g.DrawString(lengthToCm.ToString("N2") + " cm",DefaultFont,Brushes.Blue,endPoint);
+
+                    g.Dispose();
+                    clicked = true;
+                }
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -249,6 +316,10 @@ namespace mini2_sono
                         break;
                     }
                 }
+            }
+            else if (this.Cursor == Cursors.SizeWE && e.Button == MouseButtons.Left)
+            {
+                this.Text = e.Location.ToString();
             }
             else if (e.Button == MouseButtons.Left)
             {
@@ -405,7 +476,7 @@ namespace mini2_sono
                 {
                     //파일 삭제 시 프로세스 반환이 안되는 문제를 해결하기 위해
                     //GC 수동 작업.
-                    original = null;
+                    
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                     fi.Delete();
@@ -829,11 +900,14 @@ namespace mini2_sono
 
             if (this.Cursor == Cursors.Hand)
             {
-                this.Cursor = DefaultCursor;
+                this.Cursor = Cursors.SizeWE;
             }
-            else
+            else if(this.Cursor==Cursors.Default)
             {
                 this.Cursor = Cursors.Hand;
+            }else if(this.Cursor==Cursors.SizeWE)
+            {
+                this.Cursor = Cursors.Default;
             }
 
 
