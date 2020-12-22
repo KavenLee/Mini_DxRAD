@@ -70,8 +70,8 @@ namespace mini2_sono
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.button6 = new System.Windows.Forms.Button();
+            this.pictureBox12 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -592,16 +592,6 @@ namespace mini2_sono
             this.panel3.Size = new System.Drawing.Size(165, 1064);
             this.panel3.TabIndex = 25;
             // 
-            // pictureBox12
-            // 
-            this.pictureBox12.Image = global::mini2_sono.Properties.Resources.dxsono;
-            this.pictureBox12.Location = new System.Drawing.Point(6, 15);
-            this.pictureBox12.Name = "pictureBox12";
-            this.pictureBox12.Size = new System.Drawing.Size(156, 79);
-            this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox12.TabIndex = 26;
-            this.pictureBox12.TabStop = false;
-            // 
             // button6
             // 
             this.button6.ForeColor = System.Drawing.Color.Red;
@@ -613,6 +603,16 @@ namespace mini2_sono
             this.button6.Text = "Draw";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // pictureBox12
+            // 
+            this.pictureBox12.Image = global::mini2_sono.Properties.Resources.dxsono1;
+            this.pictureBox12.Location = new System.Drawing.Point(6, 15);
+            this.pictureBox12.Name = "pictureBox12";
+            this.pictureBox12.Size = new System.Drawing.Size(156, 79);
+            this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox12.TabIndex = 26;
+            this.pictureBox12.TabStop = false;
             // 
             // Form2
             // 

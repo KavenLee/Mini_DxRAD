@@ -15,7 +15,6 @@ using Point = System.Drawing.Point;
 using InterpolationMode = System.Drawing.Drawing2D.InterpolationMode;
 using System.Threading;
 using System.Drawing.Drawing2D;
-using System.Diagnostics;
 using Dicom.Log;
 
 namespace mini2_sono
@@ -159,25 +158,27 @@ namespace mini2_sono
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
-            }else if (this.Cursor == Cursors.SizeWE && pictureBox10.Image != null)
+            }
+            else if (this.Cursor == Cursors.SizeWE && pictureBox10.Image != null)
             {
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
                 e.Graphics.DrawLine(Pens.Red, startPoint, endPoint);
             }
-            else if (pictureBox10.Image != null)
+            else if(pictureBox10.Image != null)
             {
                 e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 e.Graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
                 e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
                 e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                e.Graphics.DrawImage(pictureBox10.Image, imgRect);
                 pictureBox10.Focus();
             }
 
 
             try
             {
-                e.Graphics.DrawImage(original, imgRect);
+                e.Graphics.DrawImage(pictureBox10.Image, imgRect);
             }
             catch (Exception)
             {
@@ -207,7 +208,13 @@ namespace mini2_sono
                     }
                 }
 
-            }else if (this.Cursor==Cursors.SizeWE && e.Button==MouseButtons.Left)
+            }
+            else if (this.Cursor == Cursors.Hand && e.Button == MouseButtons.Right)
+            {
+                //그렸던 선들을 지우기 위한 함수정의
+
+            }
+            else if (this.Cursor==Cursors.SizeWE && e.Button==MouseButtons.Left)
             {
                 if (clicked)
                 {
@@ -386,7 +393,8 @@ namespace mini2_sono
 
                         pB[i].Image.Dispose();
                         pB[i].Image = null;
-
+                        trackBar1.Value = 50;
+                        trackBar2.Value = 0;
 
                     }
                 }
@@ -476,7 +484,7 @@ namespace mini2_sono
                 {
                     //파일 삭제 시 프로세스 반환이 안되는 문제를 해결하기 위해
                     //GC 수동 작업.
-                    
+                    original = null;
                     GC.Collect();
                     GC.WaitForPendingFinalizers();
                     fi.Delete();
@@ -619,6 +627,7 @@ namespace mini2_sono
                     //이미지 표현하기
                     images = Image.FromFile(savePath + filename);
                     pB[i].Image = images;
+                    original = (Bitmap)images;
 
                     if (pictureBox1.Image == null)
                     {
@@ -718,8 +727,10 @@ namespace mini2_sono
                 //이미지 표현하기
                 images = Image.FromFile(savePath + filename);
                 pB[i].Image = images;
+                original = (Bitmap)pB[i].Image;
 
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+
                 if (pictureBox1.Image == null)
                 {
                     pictureBox1.Image = pB[0].Image;
